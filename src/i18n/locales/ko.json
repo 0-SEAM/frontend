@@ -9,6 +9,11 @@
     "conditions": "내 조건",
     "settings": "설정"
   },
+  "settings": {
+    "language": "언어",
+    "languages": { "en": "English", "ko": "한국어" },
+    "clearData": "이 기기의 로컬 데이터 삭제"
+  },
   "common": {
     "next": "다음",
     "back": "이전",

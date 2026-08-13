@@ -28,30 +28,35 @@ export function OnboardingPage() {
 
   if (step === "status") {
     return (
-      <section className="page">
-        <h1>{t("onboarding.stepStatus")}</h1>
-        <p className="page__help">{t("onboarding.stepStatusHelp")}</p>
-        <ul className="choice-list">
+      <section className="px-5 pt-2 pb-6">
+        <h1 className="my-1 text-[22px] font-semibold">{t("onboarding.stepStatus")}</h1>
+        <p className="text-app-muted mt-0 text-sm">{t("onboarding.stepStatusHelp")}</p>
+        <ul className="mt-4 grid list-none gap-2.5 p-0">
           {STAY_STATUSES.map((status) => (
             <li key={status}>
               <button
                 type="button"
-                className={`choice ${draft.stayStatus === status ? "choice--selected" : ""}`}
+                className={`bg-app-surface grid min-h-12 w-full gap-1 rounded-xl border px-4 py-3.5 text-left transition duration-150 hover:border-slate-400 hover:bg-slate-50 ${draft.stayStatus === status ? "border-app-accent shadow-[inset_0_0_0_1px_#1769e0]" : "border-app-line"}`}
                 onClick={() => updateDraft(nextDraftForStatus(status))}
               >
                 <strong>{t(`status.${status}`)}</strong>
-                <span>{t(`status.${status}.desc`)}</span>
+                <span className="text-app-muted text-[13px]">{t(`status.${status}.desc`)}</span>
               </button>
             </li>
           ))}
         </ul>
-        <div className="page__actions">
-          <button type="button" className="primary" disabled={!draft.stayStatus} onClick={() => setStep("conditions")}>
+        <div className="mt-5 flex gap-2">
+          <button
+            type="button"
+            className="bg-app-accent min-h-12 flex-1 rounded-[10px] px-4 font-semibold text-white shadow-[0_6px_14px_rgba(23,105,224,0.18)] transition duration-150 hover:bg-blue-700 active:translate-y-px disabled:bg-slate-300"
+            disabled={!draft.stayStatus}
+            onClick={() => setStep("conditions")}
+          >
             {t("common.next")}
           </button>
           <button
             type="button"
-            className="ghost"
+            className="border-app-line bg-app-surface text-app-muted min-h-12 rounded-[10px] border px-4 transition duration-150 hover:border-slate-400 hover:bg-slate-50 active:translate-y-px"
             onClick={() => {
               skipOnboarding();
               navigate("/timeline");
@@ -65,9 +70,9 @@ export function OnboardingPage() {
   }
 
   return (
-    <section className="page">
-      <h1>{t("onboarding.stepConditions")}</h1>
-      <p className="page__help">{t("onboarding.minimalCollection")}</p>
+    <section className="px-5 pt-2 pb-6">
+      <h1 className="my-1 text-[22px] font-semibold">{t("onboarding.stepConditions")}</h1>
+      <p className="text-app-muted mt-0 text-sm">{t("onboarding.minimalCollection")}</p>
 
       <Field
         label={t("onboarding.visaType")}
@@ -107,7 +112,11 @@ export function OnboardingPage() {
             error={errorFor("residenceCardExpiryDate")}
             onChange={(value) => updateDraft({ residenceCardExpiryDate: value || null })}
           />
-          {needsRenewalNotice(draft, new Date()) && <p className="notice">{t("onboarding.renewalNotice")}</p>}
+          {needsRenewalNotice(draft, new Date()) && (
+            <p className="bg-app-warn-bg text-app-warn rounded-[10px] px-3 py-2.5 text-[13px]">
+              {t("onboarding.renewalNotice")}
+            </p>
+          )}
         </>
       )}
 
@@ -127,11 +136,19 @@ export function OnboardingPage() {
         onChange={(value) => updateDraft({ workplaceSigungu: value || null })}
       />
 
-      <div className="page__actions">
-        <button type="button" className="ghost" onClick={() => setStep("status")}>
+      <div className="mt-5 flex gap-2">
+        <button
+          type="button"
+          className="border-app-line bg-app-surface text-app-muted min-h-12 flex-1 rounded-[10px] border px-4 transition duration-150 hover:border-slate-400 hover:bg-slate-50 active:translate-y-px"
+          onClick={() => setStep("status")}
+        >
           {t("common.back")}
         </button>
-        <button type="button" className="primary" onClick={handleSave}>
+        <button
+          type="button"
+          className="bg-app-accent min-h-12 flex-1 rounded-[10px] px-4 font-semibold text-white shadow-[0_6px_14px_rgba(23,105,224,0.18)] transition duration-150 hover:bg-blue-700 active:translate-y-px"
+          onClick={handleSave}
+        >
           {t("common.save")}
         </button>
       </div>
@@ -159,10 +176,15 @@ interface FieldProps {
 function Field({ label, field, value, type = "text", error, onChange }: FieldProps) {
   const { t } = useTranslation();
   return (
-    <label className="field" data-field={field}>
-      <span className="field__label">{label}</span>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} />
-      {error && <span className="field__error">{t(error.reasonKey)}</span>}
+    <label className="mt-4 grid gap-1.5" data-field={field}>
+      <span className="text-[13px] font-semibold">{label}</span>
+      <input
+        className="border-app-line bg-app-surface focus:border-app-accent min-h-12 rounded-[10px] border px-3 py-2.5 transition outline-none focus:ring-2 focus:ring-blue-100"
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
+      {error && <span className="text-[13px] text-red-700">{t(error.reasonKey)}</span>}
     </label>
   );
 }

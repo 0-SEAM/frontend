@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight, faCheck, faClock, faPlay, faStar } from "@fortawesome/free-solid-svg-icons";
 import { TASK_MASTER } from "../domain/taskMaster";
 import type { ComputedTask } from "../domain/types";
 import { SourceFooter } from "./SourceFooter";
@@ -15,32 +17,52 @@ export function TaskCard({ item, emphasis, onToggleDone, onGoToPrerequisite }: T
   const { t } = useTranslation();
   const { task, availability, blockedBy, recommendedDate, onCriticalPath } = item;
 
-  const icon = availability === "DONE" ? "✓" : availability === "ACTIONABLE" ? "▶" : "⏳";
+  const icon = availability === "DONE" ? faCheck : availability === "ACTIONABLE" ? faPlay : faClock;
 
   return (
-    <article className={`task-card task-card--${availability.toLowerCase()}`}>
-      {emphasis && <p className="task-card__emphasis">{t(`timeline.${emphasis}`)}</p>}
-      <h3 className="task-card__title">
-        <span aria-hidden="true">{icon}</span> {t(`${task.nameKey}`)}
+    <article
+      className={`border-app-line bg-app-surface mb-3 rounded-xl border border-l-4 px-4 py-3.5 ${availability === "ACTIONABLE" ? "border-l-app-accent" : availability === "DONE" ? "border-l-app-done" : "border-l-slate-300 opacity-75"}`}
+    >
+      {emphasis && (
+        <p className="text-app-accent m-0 text-xs font-bold tracking-[0.06em] uppercase">{t(`timeline.${emphasis}`)}</p>
+      )}
+      <h3 className="my-1 text-[17px] font-semibold">
+        <span
+          className={`inline-grid w-[22px] place-items-center text-[13px] ${availability === "DONE" ? "text-app-done" : availability === "BLOCKED" ? "text-app-muted" : "text-app-accent"}`}
+          aria-hidden="true"
+        >
+          <FontAwesomeIcon icon={icon} />
+        </span>{" "}
+        {t(`${task.nameKey}`)}
       </h3>
-      <p className="task-card__desc">{t(`${task.descriptionKey}`)}</p>
+      <p className="text-app-muted my-1 text-[13px]">{t(`${task.descriptionKey}`)}</p>
 
-      <p className="task-card__date">{recommendedDate ? t("timeline.recommendedBy", { date: recommendedDate }) : t("timeline.noDate")}</p>
+      <p className="text-app-muted my-1 text-[13px]">
+        {recommendedDate ? t("timeline.recommendedBy", { date: recommendedDate }) : t("timeline.noDate")}
+      </p>
 
       {availability === "BLOCKED" && blockedBy.length > 0 && (
-        <p className="task-card__blocked">
+        <p className="text-app-muted my-1 text-[13px]">
           {t("timeline.blockedBy", { names: blockedBy.map(taskName(t)).join(", ") })}
           {onGoToPrerequisite && (
             <button type="button" className="link" onClick={() => onGoToPrerequisite(blockedBy[0])}>
-              →
+              <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
             </button>
           )}
         </p>
       )}
 
-      {onCriticalPath && <p className="task-card__critical">★ {t("timeline.criticalPath")}</p>}
+      {onCriticalPath && (
+        <p className="text-app-warn mt-2 text-[13px]">
+          <FontAwesomeIcon icon={faStar} aria-hidden="true" /> {t("timeline.criticalPath")}
+        </p>
+      )}
 
-      <button type="button" className="task-card__action" onClick={() => onToggleDone(item)}>
+      <button
+        type="button"
+        className="border-app-line bg-app-surface mt-3 min-h-12 w-full rounded-[10px] border px-4 transition duration-150 hover:border-slate-400 hover:bg-slate-50 active:translate-y-px"
+        onClick={() => onToggleDone(item)}
+      >
         {availability === "DONE" ? t("timeline.undoDone") : t("timeline.markDone")}
       </button>
 

@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { StatusBar } from "../components/StatusBar";
 import { TaskCard } from "../components/TaskCard";
 import type { ComputedTask } from "../domain/types";
@@ -24,23 +26,26 @@ export function TimelinePage() {
   };
 
   return (
-    <section className="page">
+    <section className="px-5 pt-2 pb-6">
       <StatusBar lastUpdated={conditions?.savedAt} />
-      <h1>{t("timeline.title")}</h1>
+      <h1 className="my-1 text-[22px] font-semibold">{t("timeline.title")}</h1>
 
       {!conditions && (
         // FN-1112. 조건을 건너뛴 사용자에게는 유도 배너를 고정 노출한다.
-        <Link to="/onboarding" className="banner">
-          {t("onboarding.stepStatus")} →
+        <Link
+          to="/onboarding"
+          className="bg-app-accent-soft text-app-accent my-3 block rounded-xl px-4 py-3.5 font-semibold no-underline transition hover:bg-blue-100"
+        >
+          {t("onboarding.stepStatus")} <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
         </Link>
       )}
 
       {timeline.now ? (
-        <div className="pinned">
+        <div className="bg-app-bg sticky top-0 z-[2] pt-2">
           <TaskCard item={timeline.now} emphasis="now" onToggleDone={toggleDone} />
         </div>
       ) : (
-        <p className="empty">{t("timeline.empty")}</p>
+        <p className="text-app-muted text-sm">{t("timeline.empty")}</p>
       )}
 
       {timeline.next && <TaskCard item={timeline.next} emphasis="next" onToggleDone={toggleDone} />}
@@ -55,7 +60,7 @@ export function TimelinePage() {
 
       {timeline.notApplicable.length > 0 && (
         // FN-1163. 숨기되 몇 건인지 알려 오류로 오해하지 않게 한다.
-        <details className="not-applicable">
+        <details className="text-app-muted mt-6 text-sm">
           <summary>{t("timeline.notApplicable", { count: timeline.notApplicable.length })}</summary>
           <ul>
             {timeline.notApplicable.map((task) => (
@@ -68,11 +73,19 @@ export function TimelinePage() {
   );
 }
 
-function TaskGroup({ title, items, onToggleDone }: { title: string; items: ComputedTask[]; onToggleDone: (item: ComputedTask) => void }) {
+function TaskGroup({
+  title,
+  items,
+  onToggleDone,
+}: {
+  title: string;
+  items: ComputedTask[];
+  onToggleDone: (item: ComputedTask) => void;
+}) {
   if (items.length === 0) return null;
   return (
-    <div className="task-group">
-      <h2>{title}</h2>
+    <div>
+      <h2 className="text-app-muted mt-6 mb-2 text-[15px] font-semibold">{title}</h2>
       {items.map((item) => (
         <TaskCard key={item.task.id} item={item} onToggleDone={onToggleDone} />
       ))}

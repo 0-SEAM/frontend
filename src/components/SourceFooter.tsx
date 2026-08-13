@@ -22,23 +22,34 @@ export function SourceFooter({ sourceUrl, verifiedAt, staleAfterDays = 90 }: Sou
   const stale = !verifiedAt || now - new Date(verifiedAt).getTime() > staleAfterDays * 86_400_000;
 
   return (
-    <footer className="source-footer">
+    <footer className="border-app-line text-app-muted mt-3 flex flex-wrap items-center gap-2 border-t border-dashed pt-2.5 text-xs">
       {sourceUrl ? (
         online ? (
-          <a href={sourceUrl} target="_blank" rel="noreferrer noopener">
+          <a
+            className="text-app-accent underline-offset-2 hover:underline"
+            href={sourceUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             {t("common.sourceOfficial")} ↗
           </a>
         ) : (
           // FN-2114. 오프라인에서는 눌러도 안 되는 링크를 비활성으로 보여준다.
-          <span className="source-footer__disabled">
+          <span className="text-[#9a9a9a]">
             {t("common.sourceOfficial")} · {t("common.linkDisabledOffline")}
           </span>
         )
       ) : null}
-      <span className={stale ? "chip chip--warning" : "chip"}>
-        {stale ? `⚠ ${t("common.unverified")}` : t("common.lastUpdated", { time: new Date(verifiedAt!).toLocaleDateString() })}
+      <span
+        className={
+          stale ? "bg-app-warn-bg text-app-warn rounded-full px-2 py-0.5" : "rounded-full bg-[#f1f1ee] px-2 py-0.5"
+        }
+      >
+        {stale
+          ? `⚠ ${t("common.unverified")}`
+          : t("common.lastUpdated", { time: new Date(verifiedAt!).toLocaleDateString() })}
       </span>
-      <p className="source-footer__disclaimer">{t("common.disclaimer")}</p>
+      <p className="m-0 w-full">{t("common.disclaimer")}</p>
     </footer>
   );
 }

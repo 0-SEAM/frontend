@@ -29,9 +29,9 @@ void i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false },
 });
 
-export function setLanguage(language: SupportedLanguage): void {
+export async function setLanguage(language: SupportedLanguage): Promise<void> {
   localStorage.setItem(STORAGE_KEY, language);
-  void i18n.changeLanguage(language);
+  await i18n.changeLanguage(language);
 }
 
 export default i18n;

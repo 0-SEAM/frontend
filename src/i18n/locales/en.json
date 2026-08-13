@@ -9,6 +9,11 @@
     "conditions": "My conditions",
     "settings": "Settings"
   },
+  "settings": {
+    "language": "Language",
+    "languages": { "en": "English", "ko": "한국어" },
+    "clearData": "Clear local data on this device"
+  },
   "common": {
     "next": "Next",
     "back": "Back",

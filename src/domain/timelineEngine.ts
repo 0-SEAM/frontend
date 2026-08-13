@@ -44,7 +44,8 @@ export function computeTimeline({ tasks, conditions, progress }: TimelineInput):
   const computed: ComputedTask[] = applicable.map((task) => {
     const state = progressOf(task.id);
     const blockedBy = prereqOf(task).filter((id) => progressOf(id) !== "DONE");
-    const availability = state === "DONE" ? "DONE" : cyclic.has(task.id) || blockedBy.length > 0 ? "BLOCKED" : "ACTIONABLE";
+    const availability =
+      state === "DONE" ? "DONE" : cyclic.has(task.id) || blockedBy.length > 0 ? "BLOCKED" : "ACTIONABLE";
 
     return {
       task,

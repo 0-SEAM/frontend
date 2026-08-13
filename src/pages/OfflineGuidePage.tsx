@@ -11,14 +11,14 @@ export function OfflineGuidePage() {
   const { t } = useTranslation();
 
   return (
-    <section className="page">
+    <section className="px-5 pt-2 pb-6">
       <StatusBar />
-      <h1>{t("offline.title")}</h1>
-      <p className="page__help">{t("offline.intro")}</p>
+      <h1 className="my-1 text-[22px] font-semibold">{t("offline.title")}</h1>
+      <p className="text-app-muted mt-0 text-sm">{t("offline.intro")}</p>
 
-      <article className="guide-card">
-        <h2>{t("offline.wifi")}</h2>
-        <ul>
+      <article className="border-app-line bg-app-surface mb-3 rounded-xl border px-4 py-3.5">
+        <h2 className="mb-2 text-base font-semibold">{t("offline.wifi")}</h2>
+        <ul className="pl-5">
           <li>공항 / Airport — 무료 Wi-Fi &quot;AirportWiFi&quot;</li>
           <li>지하철역 / Subway station — 통신사 개방 AP</li>
           <li>카페 / Cafe — 영수증에 적힌 비밀번호</li>
@@ -26,16 +26,18 @@ export function OfflineGuidePage() {
         <SourceFooter sourceUrl={null} verifiedAt={null} />
       </article>
 
-      <article className="guide-card">
-        <h2>{t("offline.sim")}</h2>
-        <ul>
+      <article className="border-app-line bg-app-surface mb-3 rounded-xl border px-4 py-3.5">
+        <h2 className="mb-2 text-base font-semibold">{t("offline.sim")}</h2>
+        <ul className="pl-5">
           <li>여권 / Passport</li>
           <li>결제 수단 / Payment method</li>
         </ul>
-        <p className="phrase">
+        <p className="grid gap-0.5 rounded-[10px] bg-[#f1f1ee] px-3 py-2.5 text-sm">
           {/* REQ-NF-29. 표시 언어와 무관하게 한국어 원문을 유지하고 번역을 병기한다. */}
           <strong lang="ko">선불 유심 개통하려고 합니다. 여권만 있어도 되나요?</strong>
-          <span lang="en">I would like to activate a prepaid SIM. Is my passport enough?</span>
+          <span className="text-app-muted text-[13px]" lang="en">
+            I would like to activate a prepaid SIM. Is my passport enough?
+          </span>
         </p>
         <SourceFooter sourceUrl="https://www.hikorea.go.kr" verifiedAt={null} />
       </article>
