@@ -67,6 +67,7 @@
     "notApplicable": "{{count}} items do not apply to you",
     "blockedBy": "Available after {{names}}",
     "criticalPath": "If this slips, everything after it slips.",
+    "goToPrerequisite": "View prerequisite task",
     "recommendedBy": "Recommended by {{date}}",
     "noDate": "Order only — we need a base date to suggest a day.",
     "empty": "Nothing is unlocked yet. Start with the earliest waiting item.",

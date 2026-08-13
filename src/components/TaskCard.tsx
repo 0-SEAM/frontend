@@ -28,7 +28,7 @@ export function TaskCard({ item, emphasis, onToggleDone, onGoToPrerequisite }: T
       )}
       <h3 className="my-1 text-[17px] font-semibold">
         <span
-          className={`inline-grid w-[22px] place-items-center text-[13px] ${availability === "DONE" ? "text-app-done" : availability === "BLOCKED" ? "text-app-muted" : "text-app-accent"}`}
+          className={`inline-grid w-5.5 place-items-center text-[13px] ${availability === "DONE" ? "text-app-done" : availability === "BLOCKED" ? "text-app-muted" : "text-app-accent"}`}
           aria-hidden="true"
         >
           <FontAwesomeIcon icon={icon} />
@@ -45,7 +45,12 @@ export function TaskCard({ item, emphasis, onToggleDone, onGoToPrerequisite }: T
         <p className="text-app-muted my-1 text-[13px]">
           {t("timeline.blockedBy", { names: blockedBy.map(taskName(t)).join(", ") })}
           {onGoToPrerequisite && (
-            <button type="button" className="link" onClick={() => onGoToPrerequisite(blockedBy[0])}>
+            <button
+              type="button"
+              className="text-app-accent hover:bg-app-accent-soft focus-visible:outline-app-accent ml-1 inline-flex min-h-8 min-w-8 items-center justify-center rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-2"
+              aria-label={t("timeline.goToPrerequisite")}
+              onClick={() => onGoToPrerequisite(blockedBy[0])}
+            >
               <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
             </button>
           )}

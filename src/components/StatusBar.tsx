@@ -18,7 +18,7 @@ export function StatusBar({ lastUpdated }: { lastUpdated?: string | null }) {
       role="status"
     >
       {!online && (
-        <span className="badge badge--offline">
+        <span className="inline-flex items-center gap-1.5 font-semibold">
           <FontAwesomeIcon icon={faCircleExclamation} aria-hidden="true" /> {t("common.offline")}
         </span>
       )}

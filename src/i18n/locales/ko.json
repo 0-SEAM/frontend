@@ -67,6 +67,7 @@
     "notApplicable": "해당 없는 항목 {{count}}건",
     "blockedBy": "{{names}} 완료 후 진행",
     "criticalPath": "이 순서가 밀리면 전체가 밀립니다.",
+    "goToPrerequisite": "선행 업무 보기",
     "recommendedBy": "{{date}}까지 권장",
     "noDate": "기준일이 없어 순서만 제시합니다.",
     "empty": "지금 열린 업무가 없습니다. 가장 이른 기한의 대기 업무를 준비하세요.",

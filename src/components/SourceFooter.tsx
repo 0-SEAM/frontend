@@ -1,4 +1,6 @@
 import { useTranslation } from "react-i18next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUpRightFromSquare, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { useNetworkStatus } from "../hooks/useNetworkStatus";
 import { useToday } from "../hooks/useToday";
 
@@ -31,7 +33,7 @@ export function SourceFooter({ sourceUrl, verifiedAt, staleAfterDays = 90 }: Sou
             target="_blank"
             rel="noreferrer noopener"
           >
-            {t("common.sourceOfficial")} ↗
+            {t("common.sourceOfficial")} <FontAwesomeIcon icon={faArrowUpRightFromSquare} aria-hidden="true" />
           </a>
         ) : (
           // FN-2114. 오프라인에서는 눌러도 안 되는 링크를 비활성으로 보여준다.
@@ -45,9 +47,13 @@ export function SourceFooter({ sourceUrl, verifiedAt, staleAfterDays = 90 }: Sou
           stale ? "bg-app-warn-bg text-app-warn rounded-full px-2 py-0.5" : "rounded-full bg-[#f1f1ee] px-2 py-0.5"
         }
       >
-        {stale
-          ? `⚠ ${t("common.unverified")}`
-          : t("common.lastUpdated", { time: new Date(verifiedAt!).toLocaleDateString() })}
+        {stale ? (
+          <>
+            <FontAwesomeIcon icon={faTriangleExclamation} aria-hidden="true" /> {t("common.unverified")}
+          </>
+        ) : (
+          t("common.lastUpdated", { time: new Date(verifiedAt!).toLocaleDateString() })
+        )}
       </span>
       <p className="m-0 w-full">{t("common.disclaimer")}</p>
     </footer>
