@@ -1,7 +1,11 @@
+@import "@fontsource/pretendard/400.css";
+@import "@fontsource/pretendard/500.css";
+@import "@fontsource/pretendard/600.css";
+@import "@fontsource/pretendard/700.css";
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Avenir Next", "Noto Sans KR", system-ui, -apple-system, sans-serif;
+  --font-sans: "Pretendard", "Noto Sans KR", system-ui, -apple-system, sans-serif;
   --color-app-bg: #f4f6f8;
   --color-app-surface: #ffffff;
   --color-app-text: #17202a;
