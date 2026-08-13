@@ -17,18 +17,28 @@ export function TaskCard({ item, emphasis, onToggleDone, onGoToPrerequisite }: T
   const { t } = useTranslation();
   const { task, availability, blockedBy, recommendedDate, onCriticalPath } = item;
 
-  const icon = availability === "DONE" ? faCheck : availability === "ACTIONABLE" ? faPlay : faClock;
+  const isDone = availability === "DONE";
+  const isActionable = availability === "ACTIONABLE";
+  const icon = isDone ? faCheck : isActionable ? faPlay : faClock;
 
   return (
     <article
-      className={`border-app-line bg-app-surface mb-3 rounded-xl border border-l-4 px-4 py-3.5 ${availability === "ACTIONABLE" ? "border-l-app-accent" : availability === "DONE" ? "border-l-app-done" : "border-l-slate-300 opacity-75"}`}
+      className={`mb-3 rounded-xl border-l-4 px-4 py-3.5 transition-all duration-300 ease-out ${
+        isActionable
+          ? "border-l-app-accent bg-app-surface shadow-[0_0_0_1px_rgba(23,105,224,0.04)]"
+          : isDone
+            ? "border-l-app-done bg-gradient-to-b from-[#f1fbf4] to-white shadow-[0_0_0_1px_rgba(21,128,61,0.08)]"
+            : "bg-app-surface border-l-slate-300 opacity-75"
+      }`}
     >
       {emphasis && (
         <p className="text-app-accent m-0 text-xs font-bold tracking-[0.06em] uppercase">{t(`timeline.${emphasis}`)}</p>
       )}
       <h3 className="my-1 text-[17px] font-semibold">
         <span
-          className={`inline-grid w-5.5 place-items-center text-[13px] ${availability === "DONE" ? "text-app-done" : availability === "BLOCKED" ? "text-app-muted" : "text-app-accent"}`}
+          className={`inline-grid w-5.5 place-items-center text-[13px] transition-colors duration-300 ${
+            isDone ? "text-app-done" : availability === "BLOCKED" ? "text-app-muted" : "text-app-accent"
+          }`}
           aria-hidden="true"
         >
           <FontAwesomeIcon icon={icon} />
@@ -65,10 +75,14 @@ export function TaskCard({ item, emphasis, onToggleDone, onGoToPrerequisite }: T
 
       <button
         type="button"
-        className="border-app-line bg-app-surface mt-3 min-h-12 w-full rounded-[10px] border px-4 transition duration-150 hover:border-slate-400 hover:bg-slate-50 active:translate-y-px"
+        className={`mt-3 min-h-12 w-full rounded-[10px] border px-4 text-sm font-medium transition-all duration-300 ease-out active:translate-y-px ${
+          isDone
+            ? "border-app-done bg-app-done text-white shadow-[0_8px_18px_rgba(21,128,61,0.18)] hover:bg-[#12743a]"
+            : "border-app-line bg-app-surface text-app-text hover:border-slate-400 hover:bg-slate-50"
+        }`}
         onClick={() => onToggleDone(item)}
       >
-        {availability === "DONE" ? t("timeline.undoDone") : t("timeline.markDone")}
+        {isDone ? t("timeline.undoDone") : t("timeline.markDone")}
       </button>
 
       <SourceFooter sourceUrl={task.sourceUrl} verifiedAt={task.verifiedAt} />
