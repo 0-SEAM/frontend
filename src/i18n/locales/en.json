@@ -1,0 +1,100 @@
+{
+  "app": {
+    "name": "0:SEAM",
+    "tagline": "Your settlement steps, in order."
+  },
+  "nav": {
+    "timeline": "Timeline",
+    "offline": "Offline guide",
+    "conditions": "My conditions",
+    "settings": "Settings"
+  },
+  "common": {
+    "next": "Next",
+    "back": "Back",
+    "save": "Save",
+    "skip": "Skip for now",
+    "offline": "Offline",
+    "lastUpdated": "Last updated {{time}}",
+    "unverified": "Needs a fresh check",
+    "sourceOfficial": "Official source",
+    "disclaimer": "Branch operations may change. Please confirm on site.",
+    "openInBrowser": "Open official page",
+    "linkDisabledOffline": "Available once you are back online"
+  },
+  "onboarding": {
+    "stepStatus": "Where are you right now?",
+    "stepStatusHelp": "We ask this first because new arrivals do not have a registration card yet.",
+    "stepConditions": "A few conditions",
+    "visaType": "Visa type",
+    "entryDate": "Date of entry",
+    "entryDatePlanned": "Planned date of entry",
+    "registrationAppliedDate": "Registration application date",
+    "residenceCardExpiryDate": "Residence card expiry date",
+    "residenceSigungu": "Where you live (city / district)",
+    "workplaceSigungu": "Where you work (city / district)",
+    "minimalCollection": "We only collect city/district level, never your full address.",
+    "renewalNotice": "This card has expired. Check the renewal procedure on the official page."
+  },
+  "status": {
+    "BEFORE_ENTRY": "Before entering Korea",
+    "BEFORE_ENTRY.desc": "You have not arrived yet.",
+    "BEFORE_REGISTRATION": "Arrived, not registered yet",
+    "BEFORE_REGISTRATION.desc": "You are in Korea but have no residence card yet.",
+    "CHANGING_STATUS": "Changing visa status",
+    "CHANGING_STATUS.desc": "You already live here and are switching your status.",
+    "REGISTERED": "Registration completed",
+    "REGISTERED.desc": "You already hold a residence card."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalidDate": "Enter a valid date.",
+    "entryMustBeFuture": "Before entry means the date must be in the future.",
+    "appliedAfterEntry": "The application date must come after your entry date."
+  },
+  "timeline": {
+    "title": "Your timeline",
+    "now": "Do this now",
+    "next": "Do this next",
+    "actionable": "You can do now",
+    "blocked": "Waiting",
+    "done": "Completed",
+    "notApplicable": "{{count}} items do not apply to you",
+    "blockedBy": "Available after {{names}}",
+    "criticalPath": "If this slips, everything after it slips.",
+    "recommendedBy": "Recommended by {{date}}",
+    "noDate": "Order only — we need a base date to suggest a day.",
+    "empty": "Nothing is unlocked yet. Start with the earliest waiting item.",
+    "markDone": "Mark as done",
+    "undoDone": "Undo completion",
+    "pendingSync": "{{count}} changes waiting to sync"
+  },
+  "task": {
+    "T01": { "name": "Get a Korean phone number", "desc": "Buy a prepaid SIM so identity checks can work." },
+    "T02": { "name": "Confirm your address", "desc": "A fixed address is required before registration." },
+    "T03": { "name": "Apply for alien registration", "desc": "Apply at the immigration office for your district." },
+    "T04": { "name": "Receive your residence card", "desc": "Pick up or receive the card after approval." },
+    "T05": { "name": "Open a bank account", "desc": "Needed for salary payment." },
+    "T06": { "name": "Switch to a postpaid mobile plan", "desc": "Optional once you have a card and an account." },
+    "T07": { "name": "Check health insurance enrolment", "desc": "Confirm how you are covered." },
+    "T08": { "name": "Prepare employment documents", "desc": "Employment contract and company certificates." },
+    "T09": { "name": "Apply for a status change permit", "desc": "Required when switching visa status." },
+    "T10": { "name": "Report your address change", "desc": "Report within the legal deadline after moving." },
+    "T11": { "name": "Get a debit / transit card", "desc": "Usually issued at the bank counter." },
+    "T12": { "name": "Renew your residence card", "desc": "Start before the expiry date." }
+  },
+  "offline": {
+    "title": "You are offline",
+    "intro": "These steps work without a connection.",
+    "wifi": "How to find Wi-Fi",
+    "sim": "How to get a prepaid SIM",
+    "coreProcedures": "Core procedures (read only)",
+    "bundleMissing": "Showing the minimal guide built into the app."
+  },
+  "banks": {
+    "title": "Branch recommendations",
+    "onlineOnly": "Branch recommendations need a connection.",
+    "noExperienceYet": "No visit reports for this area yet. Sorted by official info and distance.",
+    "contribute": "Be the first to share what happened at the counter."
+  }
+}
