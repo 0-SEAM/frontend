@@ -1,10 +1,29 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import { AppShell } from "../components/AppShell";
 import { ConditionsPage } from "../pages/ConditionsPage";
 import { OfflineGuidePage } from "../pages/OfflineGuidePage";
 import { OnboardingPage } from "../pages/OnboardingPage";
 import { SettingsPage } from "../pages/SettingsPage";
 import { TimelinePage } from "../pages/TimelinePage";
+import {
+  AlertFailurePage,
+  AlertRequestPage,
+  AlertResultPage,
+  BankOfficialPage,
+  BankRecommendationsPage,
+  BankSharePage,
+  BranchExperiencePage,
+  ExpiryWarningPage,
+  LandingPage,
+  LoginPage,
+  OfficialGuidePage,
+  PrivacyWarningPage,
+  SaveFailurePage,
+  SignupPage,
+  SimGuidePage,
+  SimOfficialPage,
+  SubmissionCompletePage,
+} from "../pages/FlowPages";
 
 /**
  * FN-4124. 비로그인·오프라인에서도 접근 가능한 구간(/offline)과
@@ -15,9 +34,25 @@ export const router = createBrowserRouter([
     path: "/",
     element: <AppShell />,
     children: [
-      { index: true, element: <Navigate to="/timeline" replace /> },
+      { index: true, element: <LandingPage /> },
       { path: "onboarding", element: <OnboardingPage /> },
+      { path: "signup", element: <SignupPage /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "save-failure", element: <SaveFailurePage /> },
       { path: "timeline", element: <TimelinePage /> },
+      { path: "expiry-warning", element: <ExpiryWarningPage /> },
+      { path: "official-guide", element: <OfficialGuidePage /> },
+      { path: "alert-request", element: <AlertRequestPage /> },
+      { path: "alert-result", element: <AlertResultPage /> },
+      { path: "alert-failure", element: <AlertFailurePage /> },
+      { path: "sim-guide", element: <SimGuidePage /> },
+      { path: "sim-official", element: <SimOfficialPage /> },
+      { path: "banks", element: <BankRecommendationsPage /> },
+      { path: "branch-experience", element: <BranchExperiencePage /> },
+      { path: "bank-official", element: <BankOfficialPage /> },
+      { path: "bank-share", element: <BankSharePage /> },
+      { path: "privacy-warning", element: <PrivacyWarningPage /> },
+      { path: "submission-complete", element: <SubmissionCompletePage /> },
       { path: "offline", element: <OfflineGuidePage /> },
       { path: "conditions", element: <ConditionsPage /> },
       { path: "settings", element: <SettingsPage /> },

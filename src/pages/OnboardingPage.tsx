@@ -28,15 +28,15 @@ export function OnboardingPage() {
 
   if (step === "status") {
     return (
-      <section className="px-5 pt-2 pb-6">
-        <h1 className="my-1 text-[22px] font-semibold">{t("onboarding.stepStatus")}</h1>
-        <p className="text-app-muted mt-0 text-sm">{t("onboarding.stepStatusHelp")}</p>
-        <ul className="mt-4 grid list-none gap-2.5 p-0">
+      <section className="page-content">
+        <h1 className="page-title">{t("onboarding.stepStatus")}</h1>
+        <p className="page-lede">{t("onboarding.stepStatusHelp")}</p>
+        <ul className="grid list-none gap-3 p-0">
           {STAY_STATUSES.map((status) => (
             <li key={status}>
               <button
                 type="button"
-                className={`bg-app-surface grid min-h-12 w-full gap-1 rounded-xl border px-4 py-3.5 text-left transition duration-150 hover:border-slate-400 hover:bg-slate-50 ${draft.stayStatus === status ? "border-app-accent shadow-[inset_0_0_0_1px_#1769e0]" : "border-app-line"}`}
+                className={`surface-card grid min-h-14 w-full gap-1 text-left transition duration-150 hover:bg-[#f5f5f5] ${draft.stayStatus === status ? "border-[#303030] shadow-[inset_0_0_0_1px_#303030]" : ""}`}
                 onClick={() => updateDraft(nextDraftForStatus(status))}
               >
                 <strong>{t(`status.${status}`)}</strong>
@@ -48,7 +48,7 @@ export function OnboardingPage() {
         <div className="mt-5 flex gap-2">
           <button
             type="button"
-            className="bg-app-accent min-h-12 flex-1 rounded-[10px] px-4 font-semibold text-white shadow-[0_6px_14px_rgba(23,105,224,0.18)] transition duration-150 hover:bg-blue-700 active:translate-y-px disabled:bg-slate-300"
+            className="primary-action flex-1"
             disabled={!draft.stayStatus}
             onClick={() => setStep("conditions")}
           >
@@ -56,7 +56,7 @@ export function OnboardingPage() {
           </button>
           <button
             type="button"
-            className="border-app-line bg-app-surface text-app-muted min-h-12 rounded-[10px] border px-4 transition duration-150 hover:border-slate-400 hover:bg-slate-50 active:translate-y-px"
+            className="secondary-action"
             onClick={() => {
               skipOnboarding();
               navigate("/timeline");
@@ -70,9 +70,9 @@ export function OnboardingPage() {
   }
 
   return (
-    <section className="px-5 pt-2 pb-6">
-      <h1 className="my-1 text-[22px] font-semibold">{t("onboarding.stepConditions")}</h1>
-      <p className="text-app-muted mt-0 text-sm">{t("onboarding.minimalCollection")}</p>
+    <section className="page-content">
+      <h1 className="page-title">{t("onboarding.stepConditions")}</h1>
+      <p className="page-lede">{t("onboarding.minimalCollection")}</p>
 
       <Field
         label={t("onboarding.visaType")}
@@ -113,7 +113,7 @@ export function OnboardingPage() {
             onChange={(value) => updateDraft({ residenceCardExpiryDate: value || null })}
           />
           {needsRenewalNotice(draft, new Date()) && (
-            <p className="bg-app-warn-bg text-app-warn rounded-[10px] px-3 py-2.5 text-[13px]">
+            <p className="bg-app-warn-bg text-app-warn rounded-[11px] px-4 py-3 text-[14px]">
               {t("onboarding.renewalNotice")}
             </p>
           )}
@@ -137,18 +137,10 @@ export function OnboardingPage() {
       />
 
       <div className="mt-5 flex gap-2">
-        <button
-          type="button"
-          className="border-app-line bg-app-surface text-app-muted min-h-12 flex-1 rounded-[10px] border px-4 transition duration-150 hover:border-slate-400 hover:bg-slate-50 active:translate-y-px"
-          onClick={() => setStep("status")}
-        >
+        <button type="button" className="secondary-action flex-1" onClick={() => setStep("status")}>
           {t("common.back")}
         </button>
-        <button
-          type="button"
-          className="bg-app-accent min-h-12 flex-1 rounded-[10px] px-4 font-semibold text-white shadow-[0_6px_14px_rgba(23,105,224,0.18)] transition duration-150 hover:bg-blue-700 active:translate-y-px"
-          onClick={handleSave}
-        >
+        <button type="button" className="primary-action flex-1" onClick={handleSave}>
           {t("common.save")}
         </button>
       </div>
@@ -176,14 +168,9 @@ interface FieldProps {
 function Field({ label, field, value, type = "text", error, onChange }: FieldProps) {
   const { t } = useTranslation();
   return (
-    <label className="mt-4 grid gap-1.5" data-field={field}>
-      <span className="text-[13px] font-semibold">{label}</span>
-      <input
-        className="border-app-line bg-app-surface focus:border-app-accent min-h-12 rounded-[10px] border px-3 py-2.5 transition outline-none focus:ring-2 focus:ring-blue-100"
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-      />
+    <label className="field-label mt-5" data-field={field}>
+      <span>{label}</span>
+      <input className="field-control" type={type} value={value} onChange={(e) => onChange(e.target.value)} />
       {error && <span className="text-[13px] text-red-700">{t(error.reasonKey)}</span>}
     </label>
   );

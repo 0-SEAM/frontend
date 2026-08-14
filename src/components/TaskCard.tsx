@@ -23,21 +23,23 @@ export function TaskCard({ item, emphasis, onToggleDone, onGoToPrerequisite }: T
 
   return (
     <article
-      className={`mb-3 rounded-xl border-l-4 px-4 py-3.5 transition-all duration-300 ease-out ${
+      className={`surface-card mb-4 transition-all duration-300 ease-out ${
         isActionable
-          ? "border-l-app-accent bg-app-surface shadow-[0_0_0_1px_rgba(23,105,224,0.04)]"
+          ? "border-[#303030] shadow-[0_2px_6px_rgba(48,48,48,0.08)]"
           : isDone
-            ? "border-l-app-done bg-gradient-to-b from-[#f1fbf4] to-white shadow-[0_0_0_1px_rgba(21,128,61,0.08)]"
-            : "bg-app-surface border-l-slate-300 opacity-75"
+            ? "bg-[#f7f7f7]"
+            : "opacity-75"
       }`}
     >
       {emphasis && (
-        <p className="text-app-accent m-0 text-xs font-bold tracking-[0.06em] uppercase">{t(`timeline.${emphasis}`)}</p>
+        <p className="text-app-muted m-0 text-[13px] font-bold tracking-[0.04em] uppercase">
+          {t(`timeline.${emphasis}`)}
+        </p>
       )}
       <h3 className="my-1 text-[17px] font-semibold">
         <span
           className={`inline-grid w-5.5 place-items-center text-[13px] transition-colors duration-300 ${
-            isDone ? "text-app-done" : availability === "BLOCKED" ? "text-app-muted" : "text-app-accent"
+            isDone ? "text-app-text" : availability === "BLOCKED" ? "text-app-muted" : "text-app-text"
           }`}
           aria-hidden="true"
         >
@@ -75,10 +77,10 @@ export function TaskCard({ item, emphasis, onToggleDone, onGoToPrerequisite }: T
 
       <button
         type="button"
-        className={`mt-3 min-h-12 w-full rounded-[10px] border px-4 text-sm font-medium transition-all duration-300 ease-out active:translate-y-px ${
+        className={`mt-4 min-h-12 w-full rounded-[10px] border px-4 text-[16px] font-semibold transition-all duration-300 ease-out active:translate-y-px ${
           isDone
-            ? "border-app-done bg-app-done text-white shadow-[0_8px_18px_rgba(21,128,61,0.18)] hover:bg-[#12743a]"
-            : "border-app-line bg-app-surface text-app-text hover:border-slate-400 hover:bg-slate-50"
+            ? "border-app-text bg-app-text text-white hover:bg-[#1f1f1f]"
+            : "border-app-line bg-app-surface text-app-text hover:bg-[#f5f5f5]"
         }`}
         onClick={() => onToggleDone(item)}
       >

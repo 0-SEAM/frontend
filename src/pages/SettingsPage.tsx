@@ -11,16 +11,16 @@ export function SettingsPage() {
   const currentLanguage = (i18n.resolvedLanguage ?? i18n.language).split("-")[0] as SupportedLanguage;
 
   return (
-    <section className="px-5 pt-2 pb-6">
-      <h1 className="my-1 text-[22px] font-semibold">{t("nav.settings")}</h1>
+    <section className="page-content">
+      <h1 className="page-title">{t("nav.settings")}</h1>
 
-      <div className="mt-4 grid gap-1.5">
-        <label className="text-[13px] font-semibold" htmlFor="language">
+      <div className="surface-card mt-6 grid gap-3">
+        <label className="text-[17px] font-semibold" htmlFor="language">
           {t("settings.language")}
         </label>
         <select
           id="language"
-          className="border-app-line bg-app-surface text-app-text focus:border-app-accent min-h-12 w-full cursor-pointer rounded-[10px] border px-3 transition outline-none focus:ring-2 focus:ring-blue-100"
+          className="field-control cursor-pointer"
           value={currentLanguage}
           onChange={(event) => void setLanguage(event.target.value as SupportedLanguage)}
         >
@@ -34,7 +34,7 @@ export function SettingsPage() {
 
       <button
         type="button"
-        className="border-app-line bg-app-surface text-app-muted mt-4 min-h-12 rounded-[10px] border px-4 transition duration-150 hover:border-slate-400 hover:bg-slate-50 active:translate-y-px"
+        className="secondary-action mt-6 w-full"
         onClick={() => {
           clearConditions();
           clearProgress();

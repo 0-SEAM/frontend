@@ -14,7 +14,7 @@ export function StatusBar({ lastUpdated }: { lastUpdated?: string | null }) {
 
   return (
     <div
-      className="flex flex-wrap items-center gap-2 rounded-[10px] bg-[#1a1a1a] px-3 py-2 text-[13px] text-white"
+      className="border-app-line mb-5 flex flex-wrap items-center gap-2 rounded-[10px] border-2 bg-[#f5f5f5] px-4 py-3 text-[14px] text-[#303030]"
       role="status"
     >
       {!online && (
@@ -23,13 +23,13 @@ export function StatusBar({ lastUpdated }: { lastUpdated?: string | null }) {
         </span>
       )}
       {!online && (
-        <span className="text-[#d4d4d4]">
+        <span className="text-app-muted">
           {t("common.lastUpdated", {
             time: lastUpdated ? new Date(lastUpdated).toLocaleString() : "—",
           })}
         </span>
       )}
-      {pending > 0 && <span className="text-[#d4d4d4]">{t("timeline.pendingSync", { count: pending })}</span>}
+      {pending > 0 && <span className="text-app-muted">{t("timeline.pendingSync", { count: pending })}</span>}
     </div>
   );
 }

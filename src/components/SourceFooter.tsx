@@ -24,27 +24,22 @@ export function SourceFooter({ sourceUrl, verifiedAt, staleAfterDays = 90 }: Sou
   const stale = !verifiedAt || now - new Date(verifiedAt).getTime() > staleAfterDays * 86_400_000;
 
   return (
-    <footer className="border-app-line text-app-muted mt-3 flex flex-wrap items-center gap-2 border-t border-dashed pt-2.5 text-xs">
+    <footer className="border-app-line text-app-muted mt-5 flex flex-wrap items-center gap-2 border-t border-dashed pt-3 text-[13px]">
       {sourceUrl ? (
         online ? (
-          <a
-            className="text-app-accent underline-offset-2 hover:underline"
-            href={sourceUrl}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
+          <a className="text-action" href={sourceUrl} target="_blank" rel="noreferrer noopener">
             {t("common.sourceOfficial")} <FontAwesomeIcon icon={faArrowUpRightFromSquare} aria-hidden="true" />
           </a>
         ) : (
           // FN-2114. 오프라인에서는 눌러도 안 되는 링크를 비활성으로 보여준다.
-          <span className="text-[#9a9a9a]">
+          <span className="text-app-muted">
             {t("common.sourceOfficial")} · {t("common.linkDisabledOffline")}
           </span>
         )
       ) : null}
       <span
         className={
-          stale ? "bg-app-warn-bg text-app-warn rounded-full px-2 py-0.5" : "rounded-full bg-[#f1f1ee] px-2 py-0.5"
+          stale ? "bg-app-warn-bg text-app-warn rounded-full px-2 py-0.5" : "rounded-full bg-[#f5f5f5] px-2 py-0.5"
         }
       >
         {stale ? (

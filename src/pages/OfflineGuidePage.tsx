@@ -11,13 +11,13 @@ export function OfflineGuidePage() {
   const { t } = useTranslation();
 
   return (
-    <section className="px-5 pt-2 pb-6">
+    <section className="page-content">
       <StatusBar />
-      <h1 className="my-1 text-[22px] font-semibold">{t("offline.title")}</h1>
-      <p className="text-app-muted mt-0 text-sm">{t("offline.intro")}</p>
+      <h1 className="page-title">{t("offline.title")}</h1>
+      <p className="page-lede">{t("offline.intro")}</p>
 
-      <article className="border-app-line bg-app-surface mb-3 rounded-xl border px-4 py-3.5">
-        <h2 className="mb-2 text-base font-semibold">{t("offline.wifi")}</h2>
+      <article className="surface-card mb-4">
+        <h2 className="mb-3 text-[19px] font-bold">{t("offline.wifi")}</h2>
         <ul className="pl-5">
           <li>공항 / Airport — 무료 Wi-Fi &quot;AirportWiFi&quot;</li>
           <li>지하철역 / Subway station — 통신사 개방 AP</li>
@@ -26,8 +26,8 @@ export function OfflineGuidePage() {
         <SourceFooter sourceUrl={null} verifiedAt={null} />
       </article>
 
-      <article className="border-app-line bg-app-surface mb-3 rounded-xl border px-4 py-3.5">
-        <h2 className="mb-2 text-base font-semibold">{t("offline.sim")}</h2>
+      <article className="surface-card mb-4">
+        <h2 className="mb-3 text-[19px] font-bold">{t("offline.sim")}</h2>
         <ul className="pl-5">
           <li>여권 / Passport</li>
           <li>결제 수단 / Payment method</li>

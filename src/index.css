@@ -6,17 +6,17 @@
 
 @theme {
   --font-sans: "Pretendard", "Noto Sans KR", system-ui, -apple-system, sans-serif;
-  --color-app-bg: #f4f6f8;
+  --color-app-bg: #ffffff;
   --color-app-surface: #ffffff;
-  --color-app-text: #17202a;
-  --color-app-muted: #68737d;
-  --color-app-line: #dce2e7;
-  --color-app-accent: #1769e0;
-  --color-app-accent-soft: #e9f1ff;
-  --color-app-warn: #b45309;
-  --color-app-warn-bg: #fef3c7;
-  --color-app-done: #15803d;
-  --animate-page-enter: page-enter 220ms ease-out both;
+  --color-app-text: #303030;
+  --color-app-muted: #777777;
+  --color-app-line: #d4d4d4;
+  --color-app-accent: #303030;
+  --color-app-accent-soft: #f5f5f5;
+  --color-app-warn: #8a6d00;
+  --color-app-warn-bg: #fff8d6;
+  --color-app-done: #303030;
+  --animate-page-enter: page-enter 180ms ease-out both;
 }
 
 @keyframes page-enter {
@@ -43,11 +43,118 @@
   }
   body {
     @apply bg-app-bg text-app-text m-0 font-sans leading-relaxed antialiased;
+    font-size: 16px;
   }
   button,
   input,
-  select {
+  select,
+  textarea {
     font: inherit;
+  }
+}
+
+@layer components {
+  .app-frame {
+    @apply bg-app-surface mx-auto flex min-h-dvh w-full max-w-[780px] flex-col;
+  }
+
+  .app-header {
+    @apply border-app-line relative flex min-h-20 items-center justify-center border-b bg-white px-14 text-center;
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .app-header-title {
+    @apply text-[22px] leading-tight font-bold;
+  }
+
+  .app-header-back {
+    @apply text-app-text absolute top-1/2 left-3 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-full text-2xl transition hover:bg-[#f5f5f5] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#303030];
+  }
+
+  .app-content {
+    @apply flex-1;
+  }
+
+  .page-content {
+    @apply mx-auto w-full max-w-[700px] px-6 pt-8 pb-32;
+  }
+
+  .page-title {
+    @apply mb-2 text-[26px] leading-tight font-bold;
+  }
+
+  .page-lede {
+    @apply text-app-muted mb-7 text-[17px] leading-[1.65];
+  }
+
+  .section-title {
+    @apply mt-9 mb-4 text-[21px] leading-tight font-bold;
+  }
+
+  .surface-card {
+    @apply border-app-line bg-app-surface rounded-[12px] border-2 px-5 py-5;
+  }
+
+  .primary-action {
+    @apply bg-app-accent inline-flex min-h-14 items-center justify-center rounded-[11px] px-5 text-[18px] font-bold text-white shadow-[0_2px_4px_rgba(48,48,48,0.12)] transition hover:bg-[#1f1f1f] active:translate-y-px disabled:bg-[#d4d4d4] disabled:text-[#888888] disabled:shadow-none;
+  }
+
+  .secondary-action {
+    @apply border-app-line text-app-text inline-flex min-h-14 items-center justify-center rounded-[11px] border-2 bg-white px-5 text-[17px] font-semibold transition hover:bg-[#f5f5f5] active:translate-y-px;
+  }
+
+  .text-action {
+    @apply text-app-text font-semibold underline underline-offset-4 transition hover:text-[#777777] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#303030];
+  }
+
+  .field-label {
+    @apply text-app-text grid gap-2 text-[16px] font-semibold;
+  }
+
+  .field-control {
+    @apply border-app-line min-h-14 w-full rounded-[11px] border-2 bg-white px-4 py-3 text-[17px] transition outline-none focus:border-[#303030] focus:ring-2 focus:ring-[#e8e8e8];
+  }
+
+  .page-note {
+    @apply text-app-muted text-[15px] leading-[1.65];
+  }
+
+  .card-title {
+    @apply text-[19px] leading-tight font-bold;
+  }
+
+  .chip {
+    @apply border-app-line inline-flex min-h-9 items-center rounded-full border-2 px-3 text-[14px] font-semibold;
+  }
+
+  .result-panel {
+    @apply border-app-line mt-8 rounded-[12px] border-2 px-5 py-8 text-center;
+  }
+
+  .result-icon {
+    @apply mb-4 text-5xl leading-none font-bold;
+  }
+
+  .result-icon.error {
+    @apply text-red-600;
+  }
+
+  .bottom-nav {
+    @apply border-app-line fixed bottom-0 z-10 grid w-full max-w-[780px] grid-cols-4 border-t bg-white px-2 pt-2 shadow-[0_-2px_8px_rgba(48,48,48,0.06)];
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav-link {
+    @apply text-app-muted relative flex min-h-16 flex-col items-center justify-center gap-1 rounded-[10px] text-[13px] transition hover:bg-[#f5f5f5] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#303030];
+  }
+
+  .bottom-nav-link.active {
+    @apply text-app-text font-bold;
+  }
+
+  .bottom-nav-link.active::before {
+    content: "";
+    @apply absolute top-0 left-1/2 h-1 w-20 -translate-x-1/2 rounded-b-full bg-[#303030];
   }
 }
 

@@ -12,11 +12,11 @@ export function ConditionsPage() {
 
   if (!saved) {
     return (
-      <section className="px-5 pt-2 pb-6">
-        <h1 className="my-1 text-[22px] font-semibold">{t("nav.conditions")}</h1>
+      <section className="page-content">
+        <h1 className="page-title">{t("nav.conditions")}</h1>
         <Link
           to="/onboarding"
-          className="bg-app-accent-soft text-app-accent my-3 block rounded-xl px-4 py-3.5 font-semibold no-underline transition hover:bg-blue-100"
+          className="surface-card text-app-text my-6 block font-semibold no-underline transition hover:bg-[#f5f5f5]"
         >
           {t("onboarding.stepStatus")} <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
         </Link>
@@ -25,10 +25,10 @@ export function ConditionsPage() {
   }
 
   return (
-    <section className="px-5 pt-2 pb-6">
+    <section className="page-content">
       <StatusBar lastUpdated={saved.savedAt} />
-      <h1 className="my-1 text-[22px] font-semibold">{t("nav.conditions")}</h1>
-      <dl className="[&_dt]:text-app-muted my-4 grid grid-cols-[max-content_1fr] gap-x-4 gap-y-1.5 text-sm [&_dd]:m-0">
+      <h1 className="page-title">{t("nav.conditions")}</h1>
+      <dl className="surface-card [&_dt]:text-app-muted my-6 grid grid-cols-[max-content_1fr] gap-x-5 gap-y-4 text-[16px] [&_dd]:m-0">
         <Row label={t("onboarding.stepStatus")} value={t(`status.${saved.stayStatus}`)} />
         <Row label={t("onboarding.visaType")} value={saved.visaType} />
         <Row label={t("onboarding.entryDate")} value={saved.entryDate} />
@@ -38,10 +38,7 @@ export function ConditionsPage() {
         <Row label={t("onboarding.workplaceSigungu")} value={saved.workplaceSigungu} />
       </dl>
       <p className="text-app-muted mt-0 text-sm">{t("onboarding.minimalCollection")}</p>
-      <Link
-        to="/onboarding"
-        className="bg-app-accent flex min-h-12 items-center justify-center rounded-[10px] px-4 font-semibold text-white no-underline shadow-[0_6px_14px_rgba(23,105,224,0.18)] transition duration-150 hover:bg-blue-700 active:translate-y-px"
-      >
+      <Link to="/onboarding" className="primary-action mt-7 w-full no-underline">
         {t("common.save")}
       </Link>
     </section>

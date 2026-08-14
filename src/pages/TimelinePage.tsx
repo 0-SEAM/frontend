@@ -26,22 +26,37 @@ export function TimelinePage() {
   };
 
   return (
-    <section className="px-5 pt-2 pb-6">
+    <section className="page-content">
       <StatusBar lastUpdated={conditions?.savedAt} />
-      <h1 className="my-1 text-[22px] font-semibold">{t("timeline.title")}</h1>
+      <h1 className="page-title">{t("timeline.title")}</h1>
 
       {!conditions && (
         // FN-1112. 조건을 건너뛴 사용자에게는 유도 배너를 고정 노출한다.
         <Link
           to="/onboarding"
-          className="bg-app-accent-soft text-app-accent my-3 block rounded-xl px-4 py-3.5 font-semibold no-underline transition hover:bg-blue-100"
+          className="surface-card text-app-text my-6 block font-semibold no-underline transition hover:bg-[#f5f5f5]"
         >
           {t("onboarding.stepStatus")} <FontAwesomeIcon icon={faArrowRight} aria-hidden="true" />
         </Link>
       )}
 
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/sim-guide">
+          선불 유심 안내
+        </Link>
+        <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/banks">
+          은행 지점 추천
+        </Link>
+        <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/expiry-warning">
+          등록증 만료 확인
+        </Link>
+        <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/official-guide">
+          공식 안내 모음
+        </Link>
+      </div>
+
       {timeline.now ? (
-        <div className="bg-app-bg sticky top-0 z-[2] pt-2">
+        <div className="sticky top-0 z-[2] bg-white pt-2">
           <TaskCard item={timeline.now} emphasis="now" onToggleDone={toggleDone} />
         </div>
       ) : (
@@ -85,7 +100,7 @@ function TaskGroup({
   if (items.length === 0) return null;
   return (
     <div>
-      <h2 className="text-app-muted mt-6 mb-2 text-[15px] font-semibold">{title}</h2>
+      <h2 className="section-title text-[18px]">{title}</h2>
       {items.map((item) => (
         <TaskCard key={item.task.id} item={item} onToggleDone={onToggleDone} />
       ))}
