@@ -1,11 +1,13 @@
 import type { FormEvent, ReactNode } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Page({ title, children }: { title: string; children: ReactNode }) {
+  const { t } = useTranslation();
   return (
     <section className="page-content">
       <Link className="text-app-muted mb-6 inline-block text-sm" to="/timeline">
-        ← 이전 화면
+        {t("flow.back")}
       </Link>
       <h1 className="page-title">{title}</h1>
       {children}
@@ -31,14 +33,15 @@ function FormButton({ children }: { children: ReactNode }) {
 }
 
 export function LandingPage() {
+  const { t } = useTranslation();
   return (
     <section className="page-content text-center">
       <div className="surface-card mb-8 py-12">
         <strong className="text-3xl">0:SEAM</strong>
-        <p className="page-lede mb-0">대전 생활, 순서대로 쉽게</p>
+        <p className="page-lede mb-0">{t("flow.landingTagline")}</p>
       </div>
-      <h1 className="page-title">외국인 직원을 위한 맞춤 생활정착 안내</h1>
-      <p className="page-lede">통신·금융·주거·행정 업무를 조건에 맞는 순서로 안내합니다.</p>
+      <h1 className="page-title">{t("flow.landingTitle")}</h1>
+      <p className="page-lede">{t("flow.landingDescription")}</p>
       <div className="mt-8 grid grid-cols-2 gap-2">
         <Link className="secondary-action no-underline" to="/signup">
           English
@@ -54,65 +57,65 @@ export function LandingPage() {
         </Link>
       </div>
       <Link className="primary-action mt-8 w-full no-underline" to="/signup">
-        회원가입
+        {t("flow.signUp")}
       </Link>
       <Link className="text-app-text mt-4 inline-block underline" to="/login">
-        이미 계정이 있어요 - 로그인
+        {t("flow.existingAccount")}
       </Link>
     </section>
   );
 }
 
 export function SignupPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const submit = (event: FormEvent) => {
     event.preventDefault();
     navigate("/onboarding");
   };
   return (
-    <Page title="회원가입 화면">
+    <Page title={t("flow.signupTitle")}>
       <form onSubmit={submit}>
-        <h2 className="section-title">계정 만들기</h2>
-        <p className="page-lede">0:SEAM에 오신 것을 환영합니다. 아래 정보를 입력해 가입을 완료하세요.</p>
-        <TextField label="이름 (영문 또는 한국어)" />
-        <TextField label="이메일 주소" type="email" />
-        <TextField label="비밀번호" type="password" />
-        <TextField label="비밀번호 확인" type="password" />
-        <p className="page-note">비밀번호는 8자 이상, 영문·숫자·특수문자를 포함해야 합니다.</p>
-        <FormButton>가입하기</FormButton>
+        <h2 className="section-title">{t("flow.createAccount")}</h2>
+        <p className="page-lede">{t("flow.signupIntro")}</p>
+        <TextField label={t("flow.name")} />
+        <TextField label={t("flow.email")} type="email" />
+        <TextField label={t("flow.password")} type="password" />
+        <TextField label={t("flow.confirmPassword")} type="password" />
+        <p className="page-note">{t("flow.passwordRule")}</p>
+        <FormButton>{t("flow.signupAction")}</FormButton>
       </form>
       <Link className="text-app-text mt-4 inline-block underline" to="/login">
-        이미 계정이 있으신가요? 로그인
+        {t("flow.accountExists")}
       </Link>
       <div className="surface-card mt-8">
-        <h2 className="card-title">개인정보 수집 안내</h2>
-        <p className="page-note">
-          입력하신 이메일과 이름은 계정 식별 목적으로만 사용되며, 생활 조건 입력 전까지 추가 정보는 수집되지 않습니다.
-        </p>
+        <h2 className="card-title">{t("flow.privacyCollection")}</h2>
+        <p className="page-note">{t("flow.privacyCollectionDescription")}</p>
       </div>
     </Page>
   );
 }
 
 export function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const submit = (event: FormEvent) => {
     event.preventDefault();
     navigate("/timeline");
   };
   return (
-    <Page title="로그인 화면">
+    <Page title={t("flow.loginTitle")}>
       <form onSubmit={submit}>
-        <h2 className="section-title">0:SEAM에 로그인</h2>
-        <p className="page-lede">계정의 이메일과 비밀번호를 입력하세요.</p>
-        <TextField label="이메일" type="email" />
-        <TextField label="비밀번호" type="password" />
-        <FormButton>로그인</FormButton>
+        <h2 className="section-title">{t("flow.loginHeading")}</h2>
+        <p className="page-lede">{t("flow.loginIntro")}</p>
+        <TextField label={t("flow.email")} type="email" />
+        <TextField label={t("flow.password")} type="password" />
+        <FormButton>{t("flow.loginAction")}</FormButton>
       </form>
       <p className="text-center">
-        <span className="text-app-muted">계정이 없으신가요? </span>
+        <span className="text-app-muted">{t("flow.noAccount")} </span>
         <Link className="underline" to="/signup">
-          계정 생성
+          {t("flow.createAccountLink")}
         </Link>
       </p>
     </Page>
@@ -120,49 +123,51 @@ export function LoginPage() {
 }
 
 export function SaveFailurePage() {
+  const { t } = useTranslation();
   return (
-    <Page title="저장 실패 안내">
+    <Page title={t("flow.saveFailureTitle")}>
       <div className="result-panel">
         <div className="result-icon error">×</div>
-        <h2>저장 실패</h2>
-        <p>생활 조건을 저장할 수 없습니다.</p>
-        <p>네트워크 연결을 확인하고 다시 시도해 주세요.</p>
+        <h2>{t("flow.saveFailure")}</h2>
+        <p>{t("flow.conditionsSaveFailed")}</p>
+        <p>{t("flow.retryNetwork")}</p>
       </div>
-      <h2 className="section-title">다음과 같은 경우 실패할 수 있습니다</h2>
+      <h2 className="section-title">{t("flow.failureCases")}</h2>
       <ul className="page-lede">
-        <li>인터넷 연결이 불안정합니다</li>
-        <li>입력한 정보에 누락이 있습니다</li>
-        <li>일시적 서버 오류가 발생했습니다</li>
+        <li>{t("flow.unstableNetwork")}</li>
+        <li>{t("flow.missingInput")}</li>
+        <li>{t("flow.serverError")}</li>
       </ul>
       <Link className="primary-action mx-auto mt-6 block w-fit no-underline" to="/conditions">
-        다시 시도
+        {t("flow.retry")}
       </Link>
     </Page>
   );
 }
 
 export function ExpiryWarningPage() {
+  const { t } = useTranslation();
   return (
-    <Page title="등록증 만료 경고 카드">
-      <h2 className="section-title">외국인등록증 만료 경고</h2>
+    <Page title={t("flow.expiryTitle")}>
+      <h2 className="section-title">{t("flow.expiryHeading")}</h2>
       <div className="surface-card">
-        <p className="page-note">만료 위험도</p>
-        <h2 className="text-2xl font-bold">높음 - 30일 이내 만료</h2>
-        <p className="page-lede">현재 체류 자격이 만료되기 전에 갱신 절차를 시작하세요.</p>
+        <p className="page-note">{t("flow.riskLevel")}</p>
+        <h2 className="text-2xl font-bold">{t("flow.expiryRisk")}</h2>
+        <p className="page-lede">{t("flow.renewalStart")}</p>
       </div>
       <Link className="surface-card mt-4 block no-underline" to="/official-guide">
-        <h3 className="card-title">만료 정보</h3>
-        <Info label="만료일" value="2025년 8월 14일" />
-        <Info label="남은 기간" value="28일" />
-        <Info label="비자 종류" value="E-7 (특정활동)" />
+        <h3 className="card-title">{t("flow.expiryInfo")}</h3>
+        <Info label={t("flow.expiryDate")} value={t("flow.expiryDateValue")} />
+        <Info label={t("flow.remainingDays")} value={t("flow.remainingDaysValue")} />
+        <Info label={t("flow.visaType")} value={t("flow.visaValue")} />
       </Link>
       <div className="surface-card mt-4">
-        <h3 className="card-title">지금 해야 할 일</h3>
-        <p>1. 출입국·외국인청에 체류기간 연장 신청서를 접수하세요.</p>
-        <p>2. 고용주의 고용계약서 및 사업자등록증 사본을 준비하세요.</p>
+        <h3 className="card-title">{t("flow.tasksNow")}</h3>
+        <p>{t("flow.expiryTask1")}</p>
+        <p>{t("flow.expiryTask2")}</p>
       </div>
       <Link className="primary-action mt-6 w-full no-underline" to="/alert-request">
-        HR 동행 지원 요청
+        {t("flow.hrSupport")}
       </Link>
     </Page>
   );
@@ -178,19 +183,18 @@ function Info({ label, value }: { label: string; value: string }) {
 }
 
 export function OfficialGuidePage() {
+  const { t } = useTranslation();
   return (
-    <Page title="공식 안내 외부 링크">
-      <h2 className="section-title">외국인등록증 만료 대비</h2>
-      <p className="page-lede">체류자격 연장 신청</p>
-      <h2 className="section-title">공식 절차</h2>
-      <p className="page-lede">
-        외국인등록증 유효기간 만료 전에 거주지 관할 출입국관리사무소에 체류자격 연장을 신청해야 합니다.
-      </p>
+    <Page title={t("flow.officialGuideTitle")}>
+      <h2 className="section-title">{t("flow.expiryPreparation")}</h2>
+      <p className="page-lede">{t("flow.extensionApplication")}</p>
+      <h2 className="section-title">{t("flow.officialProcedure")}</h2>
+      <p className="page-lede">{t("flow.extensionDescription")}</p>
       <div className="surface-card">
-        <p className="card-title">출입국관리청</p>
-        <p>대한민국 공식 안내</p>
+        <p className="card-title">{t("flow.immigrationOffice")}</p>
+        <p>{t("flow.koreaOfficialGuide")}</p>
         <a className="font-semibold underline" href="https://www.hikorea.go.kr" target="_blank" rel="noreferrer">
-          출입국 안내 보기 ↗
+          {t("flow.immigrationGuide")}
         </a>
       </div>
     </Page>
@@ -198,132 +202,135 @@ export function OfficialGuidePage() {
 }
 
 export function AlertRequestPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const submit = (event: FormEvent) => {
     event.preventDefault();
     navigate("/alert-result");
   };
   return (
-    <Page title="알림 전송 요청 화면">
+    <Page title={t("flow.alertRequestTitle")}>
       <form onSubmit={submit}>
-        <h2 className="section-title">알림 전송 요청</h2>
-        <p className="page-lede">아래 내용을 확인한 후 HR 담당자에게 알림을 전송하세요.</p>
+        <h2 className="section-title">{t("flow.alertRequest")}</h2>
+        <p className="page-lede">{t("flow.alertIntro")}</p>
         <div className="surface-card">
-          <h3 className="card-title">수신 대상</h3>
-          <p>HR 담당자</p>
+          <h3 className="card-title">{t("flow.recipient")}</h3>
+          <p>{t("flow.hrManager")}</p>
         </div>
         <div className="surface-card">
-          <h3 className="card-title">전송 내용 요약</h3>
-          <Info label="만료 예정일" value="2025년 8월 14일" />
-          <Info label="남은 기간" value="28일" />
-          <Info label="등록증 종류" value="E-7" />
+          <h3 className="card-title">{t("flow.alertSummary")}</h3>
+          <Info label={t("flow.expiryPlanned")} value={t("flow.expiryDateValue")} />
+          <Info label={t("flow.remainingDays")} value={t("flow.remainingDaysValue")} />
+          <Info label={t("flow.registrationType")} value="E-7" />
         </div>
-        <TextField label="지원 요청 사유" />
-        <TextField label="긴급도" />
+        <TextField label={t("flow.supportReason")} />
+        <TextField label={t("flow.urgency")} />
         <div className="surface-card mt-4">
-          <h3 className="card-title">전송 전 주의사항</h3>
-          <p className="page-note">
-            이 알림은 HR 담당자에게 참고용으로 전송됩니다. 체류 자격 연장 신청의 접수·심사·대행은 포함되지 않습니다.
-          </p>
+          <h3 className="card-title">{t("flow.beforeSend")}</h3>
+          <p className="page-note">{t("flow.alertDisclaimer")}</p>
         </div>
-        <FormButton>알림 전송</FormButton>
+        <FormButton>{t("flow.sendAlert")}</FormButton>
       </form>
     </Page>
   );
 }
 export function AlertResultPage() {
+  const { t } = useTranslation();
   return (
-    <Page title="전송 결과 카드 화면">
+    <Page title={t("flow.alertResultTitle")}>
       <div className="result-panel">
         <div className="result-icon">✓</div>
-        <h2>알림이 전송되었습니다</h2>
-        <p>담당 HR 담당자에게 외국인등록증 만료 경고가 전달되었습니다.</p>
+        <h2>{t("flow.alertSent")}</h2>
+        <p>{t("flow.alertSentDescription")}</p>
       </div>
-      <h2 className="section-title">다음 단계</h2>
-      <p className="page-lede">
-        담당자가 경고를 확인한 후 동행 지원 여부를 알려드립니다. 긴급한 경우 담당자에게 직접 연락하세요.
-      </p>
+      <h2 className="section-title">{t("flow.nextStep")}</h2>
+      <p className="page-lede">{t("flow.alertNextStep")}</p>
       <Link className="primary-action mx-auto mt-6 block w-fit no-underline" to="/timeline">
-        홈으로 돌아가기
+        {t("flow.home")}
       </Link>
       <Link className="secondary-action mx-auto mt-3 block w-fit no-underline" to="/alert-request">
-        다시 전송
+        {t("flow.sendAgain")}
       </Link>
     </Page>
   );
 }
 export function AlertFailurePage() {
+  const { t } = useTranslation();
   return (
-    <Page title="전송 실패 안내 화면">
+    <Page title={t("flow.alertFailureTitle")}>
       <div className="result-panel">
-        <h2>전송 실패</h2>
-        <p>요청 전송에 실패했습니다.</p>
+        <h2>{t("flow.alertFailure")}</h2>
+        <p>{t("flow.alertFailedDescription")}</p>
       </div>
-      <h2 className="section-title">실패 사유</h2>
-      <p className="page-lede">네트워크 연결을 확인하고 다시 시도해 주세요.</p>
+      <h2 className="section-title">{t("flow.failureReason")}</h2>
+      <p className="page-lede">{t("flow.retryNetwork")}</p>
       <Link className="primary-action mt-6 w-full no-underline" to="/alert-request">
-        다시 시도
+        {t("flow.retry")}
       </Link>
       <Link className="secondary-action mt-3 w-full no-underline" to="/timeline">
-        이전 화면으로
+        {t("flow.previousScreen")}
       </Link>
     </Page>
   );
 }
 
 export function SimGuidePage() {
+  const { t } = useTranslation();
+  const supplies = [t("flow.passportOriginal"), t("flow.registrationOrStamp"), t("flow.cashOrCard")];
+  const steps = [
+    t("flow.chooseSeller"),
+    t("flow.buySim"),
+    t("flow.activateSim"),
+    t("flow.checkNumber"),
+    t("flow.registerContact"),
+  ];
   return (
-    <Page title="선불 유심 절차 카드">
-      <h2 className="section-title">선불 유심 개통 안내</h2>
-      <p className="page-lede">임시 한국 번호를 확보하는 방법을 단계별로 안내합니다.</p>
-      <p className="page-note">이 서비스는 유심 판매·결제·개통을 대신하지 않습니다.</p>
-      <h2 className="section-title">준비물</h2>
-      {["여권 (유효한 원본)", "외국인등록증 또는 입국 스탬프", "현금 또는 외국 카드"].map((item) => (
+    <Page title={t("flow.simGuideTitle")}>
+      <h2 className="section-title">{t("flow.simGuide")}</h2>
+      <p className="page-lede">{t("flow.simIntro")}</p>
+      <p className="page-note">{t("flow.simDisclaimer")}</p>
+      <h2 className="section-title">{t("flow.supplies")}</h2>
+      {supplies.map((item) => (
         <div className="surface-card mb-3 flex items-center justify-between" key={item}>
           <span>{item}</span>
-          <span className="text-app-muted">확인</span>
+          <span className="text-app-muted">{t("flow.check")}</span>
         </div>
       ))}
-      <h2 className="section-title">단계별 절차</h2>
-      {["구매처 선택", "유심 구매", "개통 신청", "번호 확인", "연락처 등록"].map((item, index) => (
+      <h2 className="section-title">{t("flow.procedures")}</h2>
+      {steps.map((item, index) => (
         <div className="surface-card mb-3" key={item}>
           <strong className="mr-3 text-xl">{index + 1}</strong>
           <span>{item}</span>
-          <p className="page-note ml-9">구매처 직원 안내에 따라 진행하세요.</p>
+          <p className="page-note ml-9">{t("flow.sellerInstruction")}</p>
         </div>
       ))}
       <div className="surface-card mt-6">
-        <h3 className="card-title">현장 팁</h3>
-        <p className="page-note">
-          대전역·인천공항 통신사 부스는 영어·중국어 응대가 가능합니다. 유효기간을 확인한 후 잔액을 충전하세요.
-        </p>
+        <h3 className="card-title">{t("flow.fieldTip")}</h3>
+        <p className="page-note">{t("flow.simTip")}</p>
       </div>
       <Link className="primary-action mt-6 w-full no-underline" to="/sim-official">
-        공식 안내 보기
+        {t("flow.officialGuide")}
       </Link>
     </Page>
   );
 }
 export function SimOfficialPage() {
+  const { t } = useTranslation();
+  const supplies = [t("flow.passportOriginal"), t("flow.registrationOrStamp"), t("flow.cashOrCard")];
+  const steps = [t("flow.simStep1"), t("flow.simStep2"), t("flow.simStep3"), t("flow.simStep4"), t("flow.simStep5")];
   return (
-    <Page title="유심 공식 안내 링크">
-      <h2 className="section-title">선불 유심 개통</h2>
-      <p className="page-lede">임시 한국 번호를 확보하는 첫 단계입니다.</p>
-      <h2 className="section-title">준비물</h2>
-      {["여권", "외국인등록증", "신용카드 또는 현금"].map((item) => (
+    <Page title={t("flow.simOfficialTitle")}>
+      <h2 className="section-title">{t("flow.simGuide")}</h2>
+      <p className="page-lede">{t("flow.simOfficialIntro")}</p>
+      <h2 className="section-title">{t("flow.supplies")}</h2>
+      {supplies.map((item) => (
         <div className="surface-card mb-3" key={item}>
           <strong>{item}</strong>
-          <p className="page-note">원본 또는 발급받은 서류가 필요합니다.</p>
+          <p className="page-note">{t("flow.originalDocument")}</p>
         </div>
       ))}
-      <h2 className="section-title">단계별 절차</h2>
-      {[
-        "대전 내 유심 판매점 방문",
-        "여권 제시 및 선불 유심 구매",
-        "휴대폰에 유심 장착",
-        "개통 신청 및 번호 수령",
-        "선불 요금 충전",
-      ].map((item, index) => (
+      <h2 className="section-title">{t("flow.procedures")}</h2>
+      {steps.map((item, index) => (
         <div className="surface-card mb-3" key={item}>
           <strong>
             {index + 1} {item}
@@ -336,91 +343,94 @@ export function SimOfficialPage() {
         target="_blank"
         rel="noreferrer"
       >
-        한국 이동통신사 선불 상품 안내 ↗
+        {t("flow.carrierGuide")}
       </a>
     </Page>
   );
 }
 
-const branches = ["하나은행 대전둔산지점", "국민은행 대전중구지점", "신한은행 대전원신지점"];
 export function BankRecommendationsPage() {
+  const { t } = useTranslation();
+  const branches = [t("flow.branch1"), t("flow.branch2"), t("flow.branch3")];
   return (
-    <Page title="은행 지점 추천">
-      <h2 className="section-title">내 조건에 맞는 은행 지점</h2>
+    <Page title={t("flow.bankRecommendationsTitle")}>
+      <h2 className="section-title">{t("flow.matchingBranch")}</h2>
       <div className="surface-card mb-4">
-        <p className="page-note">추천 조건 요약</p>
-        <span className="chip">E-7 비자</span> <span className="chip">대덕구 근무</span>{" "}
-        <span className="chip">재직증명서 보유</span>
+        <p className="page-note">{t("flow.conditionSummary")}</p>
+        <span className="chip">E-7 {t("flow.visaType")}</span> <span className="chip">{t("flow.workInDaedeok")}</span>{" "}
+        <span className="chip">{t("flow.hasEmploymentCertificate")}</span>
       </div>
       {branches.map((branch, index) => (
         <div className="surface-card mb-4" key={branch}>
-          <p className="page-note">추천 {index + 1}</p>
+          <p className="page-note">{t("flow.recommendation", { number: index + 1 })}</p>
           <h3 className="card-title">{branch}</h3>
-          <p className="page-note">추천 근거</p>
-          <p>외국인 계좌 개설 경험과 외국어 응대 가능 여부를 반영했습니다.</p>
-          <p className="page-note">준비 서류 참고: 여권·외국인등록증·재직증명서</p>
+          <p className="page-note">{t("flow.recommendationReason")}</p>
+          <p>{t("flow.recommendationDescription")}</p>
+          <p className="page-note">{t("flow.documentReference")}</p>
           <Link
             className="primary-action mt-4 flex w-full items-center justify-center text-center no-underline"
             to="/branch-experience"
           >
-            현장 경험 보기
+            {t("flow.viewExperience")}
           </Link>
         </div>
       ))}
       <div className="surface-card">
-        <p className="page-note">추천 결과는 참고 정보입니다. 지점 운영 방침과 서류 요건은 방문 전 직접 확인하세요.</p>
+        <p className="page-note">{t("flow.recommendationDisclaimer")}</p>
       </div>
     </Page>
   );
 }
 export function BranchExperiencePage() {
+  const { t } = useTranslation();
   return (
-    <Page title="지점 현장 경험 카드">
-      <h2 className="section-title">지점 현장 경험</h2>
-      <p className="page-lede">
-        다른 외국인 직원의 실제 방문 경험입니다. 참고용 정보이며 계좌 개설을 보장하지 않습니다.
-      </p>
+    <Page title={t("flow.branchExperienceTitle")}>
+      <h2 className="section-title">{t("flow.branchExperience")}</h2>
+      <p className="page-lede">{t("flow.experienceIntro")}</p>
       <div className="surface-card">
-        <p className="page-note">공식 정보</p>
-        <h3 className="card-title">하나은행 대전둔산지점</h3>
-        <p>운영 시간: 평일 09:00 - 16:00</p>
-        <p>외국인 창구: 전용 창구 운영</p>
-        <p>위치: 대전 서구 둔산중로 89</p>
+        <p className="page-note">{t("flow.officialInfo")}</p>
+        <h3 className="card-title">{t("flow.branchName")}</h3>
+        <p>{t("flow.openingHours")}</p>
+        <p>{t("flow.foreignCustomerDesk")}</p>
+        <p>{t("flow.location")}</p>
         <a className="font-semibold underline" href="https://www.kebhana.com" target="_blank" rel="noreferrer">
-          은행 공식 안내 확인 ↗
+          {t("flow.bankOfficialGuide")}
         </a>
       </div>
       <div className="surface-card mt-4">
-        <p className="page-note">현장 경험</p>
-        <p>계좌 개설 성공 · 2025.04</p>
-        <p>실제 요구 서류: 여권, 외국인등록증, 재직증명서</p>
-        <p>외국인 창구 직원이 영어로 안내했으며 서류가 모두 있으면 당일 개설이 가능했습니다.</p>
+        <p className="page-note">{t("flow.fieldExperience")}</p>
+        <p>{t("flow.accountOpened")}</p>
+        <p>{t("flow.requiredDocuments")}</p>
+        <p>{t("flow.experienceDescription")}</p>
       </div>
       <Link className="primary-action mt-6 w-full no-underline" to="/bank-share">
-        내 경험 공유하기
+        {t("flow.shareExperience")}
       </Link>
     </Page>
   );
 }
 export function BankOfficialPage() {
+  const { t } = useTranslation();
+  const banks = [t("flow.kookminBank"), t("flow.wooriBank"), t("flow.shinhanBank")];
   return (
-    <Page title="은행 공식 안내 링크">
-      <h2 className="section-title">계좌 개설 공식 안내</h2>
-      <p className="page-lede">은행 공식 사이트에서 제공하는 정보입니다. 최신 내용을 반드시 확인하세요.</p>
-      {["국민은행 (Kookmin Bank)", "우리은행 (Woori Bank)", "신한은행 (Shinhan Bank)"].map((bank) => (
+    <Page title={t("flow.bankOfficialTitle")}>
+      <h2 className="section-title">{t("flow.accountOpeningGuide")}</h2>
+      <p className="page-lede">{t("flow.bankOfficialIntro")}</p>
+      {banks.map((bank) => (
         <div className="surface-card mb-4" key={bank}>
           <h3 className="card-title">{bank}</h3>
-          <p className="page-note">공식 출처</p>
+          <p className="page-note">{t("flow.officialSource")}</p>
           <a className="underline" href="https://www.kbstar.com" target="_blank" rel="noreferrer">
-            외국인계좌 안내 ↗
+            {t("flow.bankOfficialGuide")}
           </a>
-          <p className="page-note">준비 서류 예시: 여권, 외국인등록증, 주소 증명 서류</p>
+          <p className="page-note">{t("flow.bankDocumentExample")}</p>
         </div>
       ))}
     </Page>
   );
 }
 export function BankSharePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const submit = (event: FormEvent) => {
@@ -428,79 +438,76 @@ export function BankSharePage() {
     navigate(location.search ? "/submission-complete" : "/privacy-warning");
   };
   return (
-    <Page title="은행 경험 공유">
+    <Page title={t("flow.bankShareTitle")}>
       <form onSubmit={submit}>
-        <h2 className="section-title">은행 방문 경험 공유</h2>
-        <p className="page-lede">
-          내 경험이 같은 지역 외국인 동료에게 도움이 됩니다. 계좌번호·외국인등록번호·연락처는 입력하지 마세요.
-        </p>
-        <TextField label="은행 및 지점 이름" />
-        <TextField label="방문 날짜" />
-        <TextField label="외국인 응대 경험" />
-        <TextField label="방문 결과" />
+        <h2 className="section-title">{t("flow.shareBankExperience")}</h2>
+        <p className="page-lede">{t("flow.shareExperienceIntro")}</p>
+        <TextField label={t("flow.bankBranchName")} />
+        <TextField label={t("flow.visitDate")} />
+        <TextField label={t("flow.languageSupport")} />
+        <TextField label={t("flow.visitResult")} />
         <label className="field-label">
-          <span>현장에서 겪은 점</span>
-          <textarea className="field-control min-h-32" defaultValue="현장에서 겪은 점을 자유롭게 작성해 주세요." />
+          <span>{t("flow.whatHappened")}</span>
+          <textarea className="field-control min-h-32" placeholder={t("flow.whatHappenedPlaceholder")} />
         </label>
         <label className="field-label">
-          <span>실제 안내받은 준비 서류</span>
-          <textarea className="field-control min-h-32" defaultValue="서류 목록을 작성해 주세요." />
+          <span>{t("flow.documentsReceived")}</span>
+          <textarea className="field-control min-h-32" placeholder={t("flow.documentsPlaceholder")} />
         </label>
         <label className="mt-6 flex gap-3">
           <input type="checkbox" required />
-          <span>위 내용을 확인했으며, 개인·금융 정보를 포함하지 않았습니다.</span>
+          <span>{t("flow.privacyCheckbox")}</span>
         </label>
-        <FormButton>경험 제출하기</FormButton>
+        <FormButton>{t("flow.submitExperience")}</FormButton>
       </form>
     </Page>
   );
 }
 export function PrivacyWarningPage() {
+  const { t } = useTranslation();
   return (
-    <Page title="개인정보 경고 화면">
-      <h2 className="section-title">제출이 잠시 멈췄어요</h2>
-      <p className="page-lede">
-        작성하신 내용에 공유하면 안 되는 개인정보가 포함되어 있어요. 아래 안내를 확인하고 해당 부분을 삭제한 뒤 다시
-        제출해 주세요.
-      </p>
+    <Page title={t("flow.privacyWarningTitle")}>
+      <h2 className="section-title">{t("flow.submissionPaused")}</h2>
+      <p className="page-lede">{t("flow.privacyWarningIntro")}</p>
       <div className="surface-card">
-        <h2 className="card-title">감지된 정보 유형</h2>
+        <h2 className="card-title">{t("flow.detectedTypes")}</h2>
         <div className="surface-card">
-          <strong>계좌번호</strong>
-          <p className="page-note">은행 계좌번호는 타인에게 노출될 경우 금융 피해로 이어질 수 있어요.</p>
+          <strong>{t("flow.accountNumber")}</strong>
+          <p className="page-note">{t("flow.accountNumberRisk")}</p>
         </div>
         <div className="surface-card">
-          <strong>연락처</strong>
-          <p className="page-note">전화번호나 이메일은 스팸·사기에 이용될 수 있어요.</p>
+          <strong>{t("flow.contact")}</strong>
+          <p className="page-note">{t("flow.contactRisk")}</p>
         </div>
       </div>
       <div className="surface-card mt-4">
-        <h2 className="card-title">수정 방법</h2>
-        <p>1. 경험 공유 화면으로 돌아가세요.</p>
-        <p>2. 감지된 정보에 해당하는 문장이나 숫자를 찾아 삭제하세요.</p>
-        <p>3. 개인정보 없이 경험 내용만 남긴 뒤 다시 제출해 주세요.</p>
+        <h2 className="card-title">{t("flow.howToEdit")}</h2>
+        <p>{t("flow.editStep1")}</p>
+        <p>{t("flow.editStep2")}</p>
+        <p>{t("flow.editStep3")}</p>
       </div>
       <Link className="primary-action mt-6 w-full no-underline" to="/bank-share?clean=1">
-        수정하고 다시 제출하기
+        {t("flow.editAndResubmit")}
       </Link>
     </Page>
   );
 }
 export function SubmissionCompletePage() {
+  const { t } = useTranslation();
   return (
-    <Page title="경험 제출 완료">
+    <Page title={t("flow.submissionCompleteTitle")}>
       <div className="result-panel">
         <div className="result-icon">✓</div>
-        <h2>경험이 제출되었습니다</h2>
-        <p>소중한 정보 감사합니다.</p>
+        <h2>{t("flow.experienceSubmitted")}</h2>
+        <p>{t("flow.thankYou")}</p>
       </div>
-      <h2 className="section-title">다음 단계</h2>
+      <h2 className="section-title">{t("flow.nextStep")}</h2>
       <ul className="page-lede">
-        <li>제출한 경험은 검토 후 다른 직원의 은행 지점 추천에 반영됩니다.</li>
-        <li>계좌번호, 등록번호, 연락처 등 민감 정보는 공유되지 않습니다.</li>
+        <li>{t("flow.submittedExperienceUse")}</li>
+        <li>{t("flow.sensitiveInfoNotShared")}</li>
       </ul>
       <Link className="primary-action mt-6 w-full no-underline" to="/timeline">
-        홈으로 돌아가기
+        {t("flow.home")}
       </Link>
     </Page>
   );
