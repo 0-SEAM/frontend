@@ -3,6 +3,7 @@ import type { BankBranch } from "../domain/branches";
 
 type KakaoMapInstance = {
   setBounds: (bounds: KakaoLatLngBounds) => void;
+  setLevel: (level: number, options?: { animate?: boolean }) => void;
   panTo: (position: KakaoLatLng) => void;
 };
 
@@ -62,6 +63,8 @@ interface KakaoMapProps {
 /** FN-3102, FN-3112, FN-3119. Interactive map with a configuration/error fallback. */
 export function KakaoMap({ branches, selectedBranchId, onSelectBranch, labels }: KakaoMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<KakaoMapInstance | null>(null);
+  const mappableBranchesRef = useRef<(BankBranch & { latitude: number; longitude: number })[]>([]);
   const [status, setStatus] = useState<"loading" | "ready" | "unconfigured" | "failed">("loading");
   const appKey = import.meta.env.VITE_KAKAO_MAP_APP_KEY;
   const displayStatus = appKey ? status : "unconfigured";
@@ -77,14 +80,25 @@ export function KakaoMap({ branches, selectedBranchId, onSelectBranch, labels }:
       .then((maps) => {
         if (disposed || !containerRef.current) return;
 
-        const selectedBranch = branches.find((branch) => branch.id === selectedBranchId) ?? branches[0];
+        const mappableBranches = branches.filter(
+          (branch): branch is BankBranch & { latitude: number; longitude: number } =>
+            branch.latitude !== null && branch.longitude !== null,
+        );
+        mappableBranchesRef.current = mappableBranches;
+        if (mappableBranches.length === 0) {
+          setStatus("ready");
+          return;
+        }
+
+        const firstBranch = mappableBranches[0];
         const map = new maps.Map(containerRef.current, {
-          center: new maps.LatLng(selectedBranch.latitude, selectedBranch.longitude),
+          center: new maps.LatLng(firstBranch.latitude, firstBranch.longitude),
           level: 6,
         });
+        mapRef.current = map;
         const bounds = new maps.LatLngBounds();
 
-        branches.forEach((branch) => {
+        mappableBranches.forEach((branch) => {
           const position = new maps.LatLng(branch.latitude, branch.longitude);
           bounds.extend(position);
           const marker = new maps.Marker({
@@ -96,10 +110,8 @@ export function KakaoMap({ branches, selectedBranchId, onSelectBranch, labels }:
           maps.event.addListener(marker, "click", () => onSelectBranch(branch.id));
         });
 
-        if (branches.length > 1) {
+        if (mappableBranches.length > 1) {
           map.setBounds(bounds);
-        } else {
-          map.panTo(new maps.LatLng(selectedBranch.latitude, selectedBranch.longitude));
         }
         setStatus("ready");
       })
@@ -110,7 +122,16 @@ export function KakaoMap({ branches, selectedBranchId, onSelectBranch, labels }:
     return () => {
       disposed = true;
     };
-  }, [appKey, branches, onSelectBranch, selectedBranchId]);
+  }, [appKey, branches, onSelectBranch]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    const selectedBranch = mappableBranchesRef.current.find((branch) => branch.id === selectedBranchId);
+    if (!map || !selectedBranch) return;
+
+    map.setLevel(3, { animate: true });
+    map.panTo(new window.kakao!.maps.LatLng(selectedBranch.latitude, selectedBranch.longitude));
+  }, [selectedBranchId]);
 
   return (
     <div className="bank-map" aria-label="Recommended bank branch map">

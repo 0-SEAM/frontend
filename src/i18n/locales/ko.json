@@ -128,6 +128,7 @@
     "showOnMap": "지도에서 보기",
     "foreignSupport": "외국인 응대 표기",
     "recommendationReason": "{{distance}}km 거리 · 성공 경험 {{count}}건",
+    "distanceUnavailable": "거리 정보가 없어 지도에서 경로를 확인해 주세요",
     "confirmLanguageSupport": "외국어 응대 여부는 방문 전 지점에 확인하세요.",
     "openDirections": "카카오맵에서 길찾기 ↗"
   },
