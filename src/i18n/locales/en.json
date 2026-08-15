@@ -128,6 +128,7 @@
     "showOnMap": "Show on map",
     "foreignSupport": "Foreign customer support noted",
     "recommendationReason": "{{distance}} km away · {{count}} successful visit reports",
+    "distanceUnavailable": "Distance is unavailable; please confirm the route on the map",
     "confirmLanguageSupport": "Confirm language support with the branch before visiting.",
     "openDirections": "Get directions in Kakao Map ↗"
   },

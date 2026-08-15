@@ -354,6 +354,7 @@ export function SimOfficialPage() {
 export function BankRecommendationsPage() {
   const { t } = useTranslation();
   const [selectedBranchId, setSelectedBranchId] = useState(BANK_BRANCHES[0].id);
+
   return (
     <Page title={t("flow.bankRecommendationsTitle")}>
       <h2 className="section-title">{t("flow.matchingBranch")}</h2>
@@ -362,16 +363,18 @@ export function BankRecommendationsPage() {
         <span className="chip">E-7 {t("flow.visaType")}</span> <span className="chip">{t("flow.workInDaedeok")}</span>{" "}
         <span className="chip">{t("flow.hasEmploymentCertificate")}</span>
       </div>
-      <KakaoMap
-        branches={BANK_BRANCHES}
-        selectedBranchId={selectedBranchId}
-        onSelectBranch={setSelectedBranchId}
-        labels={{
-          loading: t("banks.mapLoading"),
-          unconfigured: t("banks.mapUnconfigured"),
-          failed: t("banks.mapFailed"),
-        }}
-      />
+      <div className="bg-app-surface sticky top-0 z-10 py-2">
+        <KakaoMap
+          branches={BANK_BRANCHES}
+          selectedBranchId={selectedBranchId}
+          onSelectBranch={setSelectedBranchId}
+          labels={{
+            loading: t("banks.mapLoading"),
+            unconfigured: t("banks.mapUnconfigured"),
+            failed: t("banks.mapFailed"),
+          }}
+        />
+      </div>
       <p className="page-note mt-3">{t("banks.mapHint")}</p>
       {BANK_BRANCHES.map((branch, index) => (
         <div
@@ -380,12 +383,16 @@ export function BankRecommendationsPage() {
         >
           <p className="page-note">{t("flow.recommendation", { number: index + 1 })}</p>
           <div className="flex items-start justify-between gap-3">
-            <h3 className="card-title">{t(branch.nameKey)}</h3>
+            <h3 className="card-title">{branch.name}</h3>
             {branch.foreignSupport && <span className="chip shrink-0">{t("banks.foreignSupport")}</span>}
           </div>
-          <p className="page-note">{t(branch.addressKey)}</p>
+          <p className="page-note">{branch.address}</p>
           <p className="page-note">{t("flow.recommendationReason")}</p>
-          <p>{t("banks.recommendationReason", { distance: branch.distanceKm, count: branch.successfulExperiences })}</p>
+          <p>
+            {branch.distanceKm === null
+              ? t("banks.distanceUnavailable")
+              : t("banks.recommendationReason", { distance: branch.distanceKm, count: branch.successfulExperiences })}
+          </p>
           <p className="page-note">{t("flow.documentReference")}</p>
           <button className="text-action mt-3" onClick={() => setSelectedBranchId(branch.id)} type="button">
             {t("banks.showOnMap")}
@@ -408,23 +415,28 @@ export function BranchExperiencePage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const branch = BANK_BRANCHES.find((item) => item.id === searchParams.get("branch")) ?? BANK_BRANCHES[0];
-  const directionsUrl = `https://map.kakao.com/link/to/${encodeURIComponent(t(branch.nameKey))},${branch.latitude},${branch.longitude}`;
+  const directionsUrl =
+    branch.latitude === null || branch.longitude === null
+      ? null
+      : `https://map.kakao.com/link/to/${encodeURIComponent(branch.name)},${branch.latitude},${branch.longitude}`;
   return (
     <Page title={t("flow.branchExperienceTitle")}>
       <h2 className="section-title">{t("flow.branchExperience")}</h2>
       <p className="page-lede">{t("flow.experienceIntro")}</p>
       <div className="surface-card">
         <p className="page-note">{t("flow.officialInfo")}</p>
-        <h3 className="card-title">{t(branch.nameKey)}</h3>
+        <h3 className="card-title">{branch.name}</h3>
         <p>{t("flow.openingHours")}</p>
         <p>{branch.foreignSupport ? t("flow.foreignCustomerDesk") : t("banks.confirmLanguageSupport")}</p>
-        <p>{t(branch.addressKey)}</p>
-        <a className="font-semibold underline" href="https://www.kebhana.com" target="_blank" rel="noreferrer">
+        <p>{branch.address}</p>
+        <a className="font-semibold underline" href={branch.sourceUrl} target="_blank" rel="noreferrer">
           {t("flow.bankOfficialGuide")}
         </a>
-        <a className="text-action mt-3 block" href={directionsUrl} target="_blank" rel="noreferrer">
-          {t("banks.openDirections")}
-        </a>
+        {directionsUrl && (
+          <a className="text-action mt-3 block" href={directionsUrl} target="_blank" rel="noreferrer">
+            {t("banks.openDirections")}
+          </a>
+        )}
       </div>
       <div className="surface-card mt-4">
         <p className="page-note">{t("flow.fieldExperience")}</p>
