@@ -1,6 +1,8 @@
-import type { FormEvent, ReactNode } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState, type FormEvent, type ReactNode } from "react";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { KakaoMap } from "../components/KakaoMap";
+import { BANK_BRANCHES } from "../domain/branches";
 
 function Page({ title, children }: { title: string; children: ReactNode }) {
   const { t } = useTranslation();
@@ -351,7 +353,7 @@ export function SimOfficialPage() {
 
 export function BankRecommendationsPage() {
   const { t } = useTranslation();
-  const branches = [t("flow.branch1"), t("flow.branch2"), t("flow.branch3")];
+  const [selectedBranchId, setSelectedBranchId] = useState(BANK_BRANCHES[0].id);
   return (
     <Page title={t("flow.bankRecommendationsTitle")}>
       <h2 className="section-title">{t("flow.matchingBranch")}</h2>
@@ -360,16 +362,37 @@ export function BankRecommendationsPage() {
         <span className="chip">E-7 {t("flow.visaType")}</span> <span className="chip">{t("flow.workInDaedeok")}</span>{" "}
         <span className="chip">{t("flow.hasEmploymentCertificate")}</span>
       </div>
-      {branches.map((branch, index) => (
-        <div className="surface-card mb-4" key={branch}>
+      <KakaoMap
+        branches={BANK_BRANCHES}
+        selectedBranchId={selectedBranchId}
+        onSelectBranch={setSelectedBranchId}
+        labels={{
+          loading: t("banks.mapLoading"),
+          unconfigured: t("banks.mapUnconfigured"),
+          failed: t("banks.mapFailed"),
+        }}
+      />
+      <p className="page-note mt-3">{t("banks.mapHint")}</p>
+      {BANK_BRANCHES.map((branch, index) => (
+        <div
+          className={`surface-card mb-4 ${selectedBranchId === branch.id ? "border-[#303030]" : ""}`}
+          key={branch.id}
+        >
           <p className="page-note">{t("flow.recommendation", { number: index + 1 })}</p>
-          <h3 className="card-title">{branch}</h3>
+          <div className="flex items-start justify-between gap-3">
+            <h3 className="card-title">{t(branch.nameKey)}</h3>
+            {branch.foreignSupport && <span className="chip shrink-0">{t("banks.foreignSupport")}</span>}
+          </div>
+          <p className="page-note">{t(branch.addressKey)}</p>
           <p className="page-note">{t("flow.recommendationReason")}</p>
-          <p>{t("flow.recommendationDescription")}</p>
+          <p>{t("banks.recommendationReason", { distance: branch.distanceKm, count: branch.successfulExperiences })}</p>
           <p className="page-note">{t("flow.documentReference")}</p>
+          <button className="text-action mt-3" onClick={() => setSelectedBranchId(branch.id)} type="button">
+            {t("banks.showOnMap")}
+          </button>
           <Link
             className="primary-action mt-4 flex w-full items-center justify-center text-center no-underline"
-            to="/branch-experience"
+            to={`/branch-experience?branch=${branch.id}`}
           >
             {t("flow.viewExperience")}
           </Link>
@@ -383,18 +406,24 @@ export function BankRecommendationsPage() {
 }
 export function BranchExperiencePage() {
   const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const branch = BANK_BRANCHES.find((item) => item.id === searchParams.get("branch")) ?? BANK_BRANCHES[0];
+  const directionsUrl = `https://map.kakao.com/link/to/${encodeURIComponent(t(branch.nameKey))},${branch.latitude},${branch.longitude}`;
   return (
     <Page title={t("flow.branchExperienceTitle")}>
       <h2 className="section-title">{t("flow.branchExperience")}</h2>
       <p className="page-lede">{t("flow.experienceIntro")}</p>
       <div className="surface-card">
         <p className="page-note">{t("flow.officialInfo")}</p>
-        <h3 className="card-title">{t("flow.branchName")}</h3>
+        <h3 className="card-title">{t(branch.nameKey)}</h3>
         <p>{t("flow.openingHours")}</p>
-        <p>{t("flow.foreignCustomerDesk")}</p>
-        <p>{t("flow.location")}</p>
+        <p>{branch.foreignSupport ? t("flow.foreignCustomerDesk") : t("banks.confirmLanguageSupport")}</p>
+        <p>{t(branch.addressKey)}</p>
         <a className="font-semibold underline" href="https://www.kebhana.com" target="_blank" rel="noreferrer">
           {t("flow.bankOfficialGuide")}
+        </a>
+        <a className="text-action mt-3 block" href={directionsUrl} target="_blank" rel="noreferrer">
+          {t("banks.openDirections")}
         </a>
       </div>
       <div className="surface-card mt-4">

@@ -42,16 +42,16 @@ export function TimelinePage() {
 
       <div className="mt-6 grid grid-cols-2 gap-3">
         <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/sim-guide">
-          선불 유심 안내
+          {t("timeline.quickLinks.simGuide")}
         </Link>
         <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/banks">
-          은행 지점 추천
+          {t("timeline.quickLinks.bankRecommendations")}
         </Link>
         <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/expiry-warning">
-          등록증 만료 확인
+          {t("timeline.quickLinks.expiryWarning")}
         </Link>
         <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/official-guide">
-          공식 안내 모음
+          {t("timeline.quickLinks.officialGuides")}
         </Link>
       </div>
 

@@ -73,7 +73,13 @@
     "empty": "지금 열린 업무가 없습니다. 가장 이른 기한의 대기 업무를 준비하세요.",
     "markDone": "완료로 표시",
     "undoDone": "완료 해제",
-    "pendingSync": "동기화 대기 {{count}}건"
+    "pendingSync": "동기화 대기 {{count}}건",
+    "quickLinks": {
+      "simGuide": "선불 유심 안내",
+      "bankRecommendations": "은행 지점 추천",
+      "expiryWarning": "등록증 만료 확인",
+      "officialGuides": "공식 안내 모음"
+    }
   },
   "task": {
     "T01": { "name": "한국 번호 확보", "desc": "본인인증을 위해 선불 유심을 개통합니다." },
@@ -95,13 +101,35 @@
     "wifi": "Wi‑Fi 연결 방법",
     "sim": "선불 유심 준비 방법",
     "coreProcedures": "핵심 절차(읽기 전용)",
-    "bundleMissing": "앱에 내장된 최소 안내를 표시합니다."
+    "bundleMissing": "앱에 내장된 최소 안내를 표시합니다.",
+    "wifiLocations": {
+      "airport": "공항 / Airport - 무료 Wi-Fi \"AirportWiFi\"",
+      "subway": "지하철역 / Subway station - 통신사 개방 AP",
+      "cafe": "카페 / Cafe - 영수증에 적힌 비밀번호"
+    },
+    "simSupplies": {
+      "passport": "여권 / Passport",
+      "paymentMethod": "결제 수단 / Payment method"
+    },
+    "simRequest": {
+      "korean": "선불 유심 개통하려고 합니다. 여권만 있어도 되나요?",
+      "english": "I would like to activate a prepaid SIM. Is my passport enough?"
+    }
   },
   "banks": {
     "title": "지점 추천",
     "onlineOnly": "지점 추천은 연결이 필요합니다.",
     "noExperienceYet": "이 지역의 방문 경험이 아직 없습니다. 공식 안내와 거리 기준으로 정렬했습니다.",
-    "contribute": "창구에서 겪은 내용을 처음으로 남겨 주세요."
+    "contribute": "창구에서 겪은 내용을 처음으로 남겨 주세요.",
+    "mapLoading": "지도를 불러오는 중입니다.",
+    "mapUnconfigured": "지도 설정 후 이 위치에 카카오 지도가 표시됩니다.",
+    "mapFailed": "지도를 불러올 수 없습니다. 아래 추천 목록은 계속 볼 수 있습니다.",
+    "mapHint": "지도 마커나 '지도에서 보기'를 선택해 지점을 확인하세요.",
+    "showOnMap": "지도에서 보기",
+    "foreignSupport": "외국인 응대 표기",
+    "recommendationReason": "{{distance}}km 거리 · 성공 경험 {{count}}건",
+    "confirmLanguageSupport": "외국어 응대 여부는 방문 전 지점에 확인하세요.",
+    "openDirections": "카카오맵에서 길찾기 ↗"
   },
   "flow": {
     "landingTagline": "대전 생활, 순서대로 쉽게",
@@ -133,6 +161,9 @@
     "branch1": "하나은행 대전둔산지점",
     "branch2": "국민은행 대전중구지점",
     "branch3": "신한은행 대전원신지점",
+    "branch1Address": "대전 서구 둔산중로 89",
+    "branch2Address": "대전 중구 중앙로 126",
+    "branch3Address": "대전 동구 동서대로 1689",
     "kookminBank": "국민은행 (Kookmin Bank)",
     "wooriBank": "우리은행 (Woori Bank)",
     "shinhanBank": "신한은행 (Shinhan Bank)",

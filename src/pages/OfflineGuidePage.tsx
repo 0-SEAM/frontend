@@ -19,9 +19,9 @@ export function OfflineGuidePage() {
       <article className="surface-card mb-4">
         <h2 className="mb-3 text-[19px] font-bold">{t("offline.wifi")}</h2>
         <ul className="pl-5">
-          <li>공항 / Airport — 무료 Wi-Fi &quot;AirportWiFi&quot;</li>
-          <li>지하철역 / Subway station — 통신사 개방 AP</li>
-          <li>카페 / Cafe — 영수증에 적힌 비밀번호</li>
+          <li>{t("offline.wifiLocations.airport")}</li>
+          <li>{t("offline.wifiLocations.subway")}</li>
+          <li>{t("offline.wifiLocations.cafe")}</li>
         </ul>
         <SourceFooter sourceUrl={null} verifiedAt={null} />
       </article>
@@ -29,14 +29,14 @@ export function OfflineGuidePage() {
       <article className="surface-card mb-4">
         <h2 className="mb-3 text-[19px] font-bold">{t("offline.sim")}</h2>
         <ul className="pl-5">
-          <li>여권 / Passport</li>
-          <li>결제 수단 / Payment method</li>
+          <li>{t("offline.simSupplies.passport")}</li>
+          <li>{t("offline.simSupplies.paymentMethod")}</li>
         </ul>
         <p className="grid gap-0.5 rounded-[10px] bg-[#f1f1ee] px-3 py-2.5 text-sm">
           {/* REQ-NF-29. 표시 언어와 무관하게 한국어 원문을 유지하고 번역을 병기한다. */}
-          <strong lang="ko">선불 유심 개통하려고 합니다. 여권만 있어도 되나요?</strong>
+          <strong lang="ko">{t("offline.simRequest.korean")}</strong>
           <span className="text-app-muted text-[13px]" lang="en">
-            I would like to activate a prepaid SIM. Is my passport enough?
+            {t("offline.simRequest.english")}
           </span>
         </p>
         <SourceFooter sourceUrl="https://www.hikorea.go.kr" verifiedAt={null} />

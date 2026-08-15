@@ -139,6 +139,18 @@
     @apply text-red-600;
   }
 
+  .bank-map {
+    @apply border-app-line relative h-72 overflow-hidden rounded-[8px] border-2 bg-[#f5f5f5];
+  }
+
+  .bank-map-canvas {
+    @apply h-full w-full;
+  }
+
+  .bank-map-fallback {
+    @apply text-app-muted absolute inset-0 flex items-center justify-center px-8 text-center text-[15px] font-medium;
+  }
+
   .bottom-nav {
     @apply border-app-line fixed bottom-0 z-10 grid w-full max-w-[780px] grid-cols-4 border-t bg-white px-2 pt-2 shadow-[0_-2px_8px_rgba(48,48,48,0.06)];
     padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));

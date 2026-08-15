@@ -73,7 +73,13 @@
     "empty": "Nothing is unlocked yet. Start with the earliest waiting item.",
     "markDone": "Mark as done",
     "undoDone": "Undo completion",
-    "pendingSync": "{{count}} changes waiting to sync"
+    "pendingSync": "{{count}} changes waiting to sync",
+    "quickLinks": {
+      "simGuide": "Prepaid SIM guide",
+      "bankRecommendations": "Bank branch recommendations",
+      "expiryWarning": "Check card expiry",
+      "officialGuides": "Official guides"
+    }
   },
   "task": {
     "T01": { "name": "Get a Korean phone number", "desc": "Buy a prepaid SIM so identity checks can work." },
@@ -95,13 +101,35 @@
     "wifi": "How to find Wi-Fi",
     "sim": "How to get a prepaid SIM",
     "coreProcedures": "Core procedures (read only)",
-    "bundleMissing": "Showing the minimal guide built into the app."
+    "bundleMissing": "Showing the minimal guide built into the app.",
+    "wifiLocations": {
+      "airport": "Airport - free Wi-Fi \"AirportWiFi\"",
+      "subway": "Subway station - carrier public access point",
+      "cafe": "Cafe - password printed on the receipt"
+    },
+    "simSupplies": {
+      "passport": "Passport",
+      "paymentMethod": "Payment method"
+    },
+    "simRequest": {
+      "korean": "선불 유심 개통하려고 합니다. 여권만 있어도 되나요?",
+      "english": "I would like to activate a prepaid SIM. Is my passport enough?"
+    }
   },
   "banks": {
     "title": "Branch recommendations",
     "onlineOnly": "Branch recommendations need a connection.",
     "noExperienceYet": "No visit reports for this area yet. Sorted by official info and distance.",
-    "contribute": "Be the first to share what happened at the counter."
+    "contribute": "Be the first to share what happened at the counter.",
+    "mapLoading": "Loading map...",
+    "mapUnconfigured": "Configure the map to show Kakao Map here.",
+    "mapFailed": "The map could not load. You can still use the recommendations below.",
+    "mapHint": "Select a map marker or 'Show on map' to inspect a branch.",
+    "showOnMap": "Show on map",
+    "foreignSupport": "Foreign customer support noted",
+    "recommendationReason": "{{distance}} km away · {{count}} successful visit reports",
+    "confirmLanguageSupport": "Confirm language support with the branch before visiting.",
+    "openDirections": "Get directions in Kakao Map ↗"
   },
   "flow": {
     "landingTagline": "Daejeon life, one step at a time",
@@ -133,6 +161,9 @@
     "branch1": "Hana Bank Daejeon Dunsan Branch",
     "branch2": "KB Kookmin Bank Daejeon Jung-gu Branch",
     "branch3": "Shinhan Bank Daejeon Wonsin Branch",
+    "branch1Address": "89 Dunsan Jung-ro, Seo-gu, Daejeon",
+    "branch2Address": "126 Jungang-ro, Jung-gu, Daejeon",
+    "branch3Address": "1689 Dongseo-daero, Dong-gu, Daejeon",
     "kookminBank": "KB Kookmin Bank",
     "wooriBank": "Woori Bank",
     "shinhanBank": "Shinhan Bank",
