@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AppShell } from "../components/AppShell";
 import { ConditionsPage } from "../pages/ConditionsPage";
+import { ExperienceModerationPage } from "../pages/ExperienceModerationPage";
+import { GuideSyncPage } from "../pages/GuideSyncPage";
 import { OfflineGuidePage } from "../pages/OfflineGuidePage";
 import { OnboardingPage } from "../pages/OnboardingPage";
 import { SettingsPage } from "../pages/SettingsPage";
@@ -54,7 +56,9 @@ export const router = createBrowserRouter([
       { path: "privacy-warning", element: <PrivacyWarningPage /> },
       { path: "submission-complete", element: <SubmissionCompletePage /> },
       { path: "offline", element: <OfflineGuidePage /> },
+      { path: "guides", element: <GuideSyncPage /> },
       { path: "conditions", element: <ConditionsPage /> },
+      { path: "experiences/moderation", element: <ExperienceModerationPage /> },
       { path: "settings", element: <SettingsPage /> },
     ],
   },

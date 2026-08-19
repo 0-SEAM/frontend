@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { SourceFooter } from "../components/SourceFooter";
 import { StatusBar } from "../components/StatusBar";
 
@@ -41,6 +42,10 @@ export function OfflineGuidePage() {
         </p>
         <SourceFooter sourceUrl="https://www.hikorea.go.kr" verifiedAt={null} />
       </article>
+
+      <Link className="secondary-action mt-2 w-full no-underline" to="/guides">
+        {t("guides.openSync")}
+      </Link>
     </section>
   );
 }

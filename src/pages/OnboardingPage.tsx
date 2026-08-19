@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { isFieldVisible, needsRenewalNotice, validateConditions, type FieldError } from "../domain/conditionValidation";
 import { STAY_STATUSES, type StayStatus, type UserConditions } from "../domain/types";
+import { saveConditions } from "../services/seamApi";
 import { useConditionsStore } from "../store/conditionsStore";
 
 /** FN-1101·FN-1102. 체류 상태를 먼저 묻고, 이후 항목을 상태에 따라 다르게 구성한다. */
@@ -12,18 +13,30 @@ export function OnboardingPage() {
   const { draft, updateDraft, commitDraft, skipOnboarding } = useConditionsStore();
   const [step, setStep] = useState<"status" | "conditions">("status");
   const [errors, setErrors] = useState<FieldError[]>([]);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const errorFor = (field: keyof UserConditions) => errors.find((e) => e.field === field);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const found = validateConditions(draft, new Date());
     setErrors(found);
     if (found.length > 0) {
       document.querySelector(`[data-field="${found[0].field}"]`)?.scrollIntoView({ block: "center" });
       return;
     }
-    commitDraft(new Date().toISOString());
-    navigate("/timeline");
+
+    setSaveError(null);
+    setIsSaving(true);
+    try {
+      const saved = await saveConditions(draft);
+      commitDraft(saved.updatedAt ?? new Date().toISOString());
+      navigate("/timeline");
+    } catch {
+      setSaveError(t("flow.conditionsSaveFailed"));
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   if (step === "status") {
@@ -140,10 +153,11 @@ export function OnboardingPage() {
         <button type="button" className="secondary-action flex-1" onClick={() => setStep("status")}>
           {t("common.back")}
         </button>
-        <button type="button" className="primary-action flex-1" onClick={handleSave}>
+        <button type="button" className="primary-action flex-1" disabled={isSaving} onClick={handleSave}>
           {t("common.save")}
         </button>
       </div>
+      {saveError && <p className="mt-3 text-sm text-red-700">{saveError}</p>}
     </section>
   );
 }

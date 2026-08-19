@@ -18,11 +18,17 @@ export function TimelinePage() {
   const setProgress = useTaskProgressStore((s) => s.setProgress);
   const timeline = useTimeline();
 
-  const toggleDone = (item: ComputedTask) => {
+  const toggleDone = async (item: ComputedTask) => {
+    const progress = item.progress === "DONE" ? "NOT_STARTED" : "DONE";
     // FN-1155. 오프라인 변경은 로컬 큐에 쌓고 연결 복구 시 전송한다.
-    setProgress(item.task.id, item.progress === "DONE" ? "NOT_STARTED" : "DONE", {
-      offline: !online,
-    });
+    setProgress(item.task.id, progress, { offline: !online });
+    if (online) {
+      try {
+        await timeline.syncTaskStatus(item.task.id, progress);
+      } catch {
+        setProgress(item.task.id, progress, { offline: true });
+      }
+    }
   };
 
   return (

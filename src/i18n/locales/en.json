@@ -12,7 +12,8 @@
   "settings": {
     "language": "Language",
     "languages": { "en": "English", "ko": "한국어" },
-    "clearData": "Clear local data on this device"
+    "clearData": "Clear local data on this device",
+    "reviewExperiences": "Review submitted experiences"
   },
   "common": {
     "next": "Next",
@@ -289,6 +290,7 @@
     "visitDate": "Visit date",
     "languageSupport": "Language support experience",
     "visitResult": "Visit result",
+    "durationMinutes": "Time spent (minutes)",
     "whatHappened": "What happened at the branch",
     "whatHappenedPlaceholder": "Describe what happened at the branch.",
     "documentsReceived": "Documents requested at the branch",
@@ -313,5 +315,32 @@
     "thankYou": "Thank you for sharing useful information.",
     "submittedExperienceUse": "After review, your experience will help recommend branches to other employees.",
     "sensitiveInfoNotShared": "Sensitive information such as account, registration, and contact numbers is not shared."
+  },
+  "guides": {
+    "title": "Guide sync status",
+    "intro": "This list is synced from the service and shows which guide bundles are available.",
+    "openSync": "Check guide sync status",
+    "loading": "Checking guide updates...",
+    "error": "Guide updates could not be checked.",
+    "empty": "No guide bundles are available yet.",
+    "version": "Version {{version}}",
+    "availableOffline": "Available offline",
+    "onlineOnly": "Online only",
+    "updated": "Updated {{date}}"
+  },
+  "experiences": {
+    "loading": "Loading approved visit experiences...",
+    "error": "Visit experiences could not be loaded.",
+    "empty": "No approved visit experiences are available for this branch yet.",
+    "duration": "Time spent: {{minutes}} minutes"
+  },
+  "moderation": {
+    "title": "Experience review",
+    "intro": "Approve only information that is useful and contains no personal information.",
+    "loading": "Loading submitted experiences...",
+    "error": "Submitted experiences could not be updated.",
+    "empty": "There are no experiences waiting for review.",
+    "approve": "Approve",
+    "reject": "Reject"
   }
 }

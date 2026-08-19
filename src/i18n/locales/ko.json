@@ -12,7 +12,8 @@
   "settings": {
     "language": "언어",
     "languages": { "en": "English", "ko": "한국어" },
-    "clearData": "이 기기의 로컬 데이터 삭제"
+    "clearData": "이 기기의 로컬 데이터 삭제",
+    "reviewExperiences": "제출된 경험 검토"
   },
   "common": {
     "next": "다음",
@@ -289,6 +290,7 @@
     "visitDate": "방문 날짜",
     "languageSupport": "외국인 응대 경험",
     "visitResult": "방문 결과",
+    "durationMinutes": "소요 시간(분)",
     "whatHappened": "현장에서 겪은 점",
     "whatHappenedPlaceholder": "현장에서 겪은 점을 자유롭게 작성해 주세요.",
     "documentsReceived": "실제 안내받은 준비 서류",
@@ -313,5 +315,32 @@
     "thankYou": "소중한 정보 감사합니다.",
     "submittedExperienceUse": "제출한 경험은 검토 후 다른 직원의 은행 지점 추천에 반영됩니다.",
     "sensitiveInfoNotShared": "계좌번호, 등록번호, 연락처 등 민감 정보는 공유되지 않습니다."
+  },
+  "guides": {
+    "title": "안내 콘텐츠 동기화 상태",
+    "intro": "서비스에서 동기화한 안내 번들과 오프라인 제공 여부를 확인합니다.",
+    "openSync": "안내 콘텐츠 동기화 확인",
+    "loading": "안내 콘텐츠를 확인하고 있어요.",
+    "error": "안내 콘텐츠를 확인할 수 없어요.",
+    "empty": "현재 동기화된 안내 콘텐츠가 없습니다.",
+    "version": "버전 {{version}}",
+    "availableOffline": "오프라인에서 사용 가능",
+    "onlineOnly": "온라인 전용",
+    "updated": "갱신 {{date}}"
+  },
+  "experiences": {
+    "loading": "승인된 현장 경험을 불러오고 있어요.",
+    "error": "현장 경험을 불러올 수 없어요.",
+    "empty": "이 지점에는 아직 승인된 현장 경험이 없습니다.",
+    "duration": "소요 시간: {{minutes}}분"
+  },
+  "moderation": {
+    "title": "경험 검토",
+    "intro": "개인정보 없이 다른 사용자에게 도움이 되는 정보만 승인하세요.",
+    "loading": "제출된 경험을 불러오고 있어요.",
+    "error": "제출된 경험을 처리할 수 없어요.",
+    "empty": "검토 대기 중인 경험이 없습니다.",
+    "approve": "승인",
+    "reject": "반려"
   }
 }

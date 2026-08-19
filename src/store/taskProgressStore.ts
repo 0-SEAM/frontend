@@ -15,6 +15,7 @@ interface TaskProgressState {
   /** FN-1155. 오프라인에서 누른 변경은 큐에 쌓아 두고 연결 복구 시 순서대로 전송한다. */
   pendingSync: ProgressChange[];
   setProgress: (taskId: string, progress: TaskProgress, options?: { offline?: boolean }) => void;
+  hydrateProgress: (progress: Record<string, TaskProgress>) => void;
   markSynced: (count: number) => void;
   clearAll: () => void;
 }
@@ -37,6 +38,7 @@ export const useTaskProgressStore = create<TaskProgressState>()(
           pendingSync: options?.offline ? [...get().pendingSync, change] : get().pendingSync,
         });
       },
+      hydrateProgress: (progress) => set({ progress: { ...get().progress, ...progress } }),
       markSynced: (count) => set({ pendingSync: get().pendingSync.slice(count) }),
       clearAll: () => set({ progress: {}, history: [], pendingSync: [] }),
     }),

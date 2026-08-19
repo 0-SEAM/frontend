@@ -1,8 +1,9 @@
-import { useState, type FormEvent, type ReactNode } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { KakaoMap } from "../components/KakaoMap";
 import { BANK_BRANCHES } from "../domain/branches";
+import { getApprovedExperiences, submitFieldExperience, type ApiFieldExperience } from "../services/seamApi";
 
 function Page({ title, children }: { title: string; children: ReactNode }) {
   const { t } = useTranslation();
@@ -17,18 +18,42 @@ function Page({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-function TextField({ label, type = "text" }: { label: string; type?: string }) {
+function TextField({
+  label,
+  type = "text",
+  value,
+  onChange,
+  required,
+  readOnly,
+  min,
+}: {
+  label: string;
+  type?: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  required?: boolean;
+  readOnly?: boolean;
+  min?: string;
+}) {
   return (
     <label className="field-label">
       <span>{label}</span>
-      <input className="field-control" type={type} />
+      <input
+        className="field-control"
+        type={type}
+        value={value}
+        onChange={(event) => onChange?.(event.target.value)}
+        required={required}
+        readOnly={readOnly}
+        min={min}
+      />
     </label>
   );
 }
 
-function FormButton({ children }: { children: ReactNode }) {
+function FormButton({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
   return (
-    <button className="primary-action mt-6 w-full" type="submit">
+    <button className="primary-action mt-6 w-full" type="submit" disabled={disabled}>
       {children}
     </button>
   );
@@ -415,6 +440,21 @@ export function BranchExperiencePage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const branch = BANK_BRANCHES.find((item) => item.id === searchParams.get("branch")) ?? BANK_BRANCHES[0];
+  const [experiences, setExperiences] = useState<ApiFieldExperience[]>([]);
+  const [experienceState, setExperienceState] = useState<"loading" | "ready" | "error">("loading");
+  const loadedBranchId = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (loadedBranchId.current === branch.id) return;
+    loadedBranchId.current = branch.id;
+    void getApprovedExperiences(branch.id)
+      .then((items) => {
+        setExperiences(items);
+        setExperienceState("ready");
+      })
+      .catch(() => setExperienceState("error"));
+  }, [branch.id]);
+
   const directionsUrl =
     branch.latitude === null || branch.longitude === null
       ? null
@@ -438,13 +478,27 @@ export function BranchExperiencePage() {
           </a>
         )}
       </div>
-      <div className="surface-card mt-4">
-        <p className="page-note">{t("flow.fieldExperience")}</p>
-        <p>{t("flow.accountOpened")}</p>
-        <p>{t("flow.requiredDocuments")}</p>
-        <p>{t("flow.experienceDescription")}</p>
-      </div>
-      <Link className="primary-action mt-6 w-full no-underline" to="/bank-share">
+      <section className="mt-4">
+        <h2 className="section-title">{t("flow.fieldExperience")}</h2>
+        {experienceState === "loading" && <p className="text-app-muted text-sm">{t("experiences.loading")}</p>}
+        {experienceState === "error" && <p className="text-sm text-red-700">{t("experiences.error")}</p>}
+        {experienceState === "ready" && experiences.length === 0 && (
+          <p className="surface-card text-app-muted text-sm">{t("experiences.empty")}</p>
+        )}
+        {experiences.map((experience) => (
+          <article className="surface-card mb-3" key={experience.experienceId}>
+            <p className="page-note">{experience.visitDate}</p>
+            {experience.visitResult && <p>{experience.visitResult}</p>}
+            {experience.requiredDocs && <p className="text-app-muted text-sm">{experience.requiredDocs}</p>}
+            {experience.durationMinutes !== null && (
+              <p className="text-app-muted text-sm">
+                {t("experiences.duration", { minutes: experience.durationMinutes })}
+              </p>
+            )}
+          </article>
+        ))}
+      </section>
+      <Link className="primary-action mt-6 w-full no-underline" to={`/bank-share?branch=${branch.id}`}>
         {t("flow.shareExperience")}
       </Link>
     </Page>
@@ -473,33 +527,79 @@ export function BankOfficialPage() {
 export function BankSharePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const location = useLocation();
-  const submit = (event: FormEvent) => {
+  const [searchParams] = useSearchParams();
+  const [visitDate, setVisitDate] = useState("");
+  const [visitResult, setVisitResult] = useState("");
+  const [requiredDocs, setRequiredDocs] = useState("");
+  const [durationMinutes, setDurationMinutes] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const branchId = searchParams.get("branch") ?? "";
+
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
-    navigate(location.search ? "/submission-complete" : "/privacy-warning");
+    if (!branchId) {
+      navigate("/privacy-warning");
+      return;
+    }
+
+    setSubmitError(null);
+    setIsSubmitting(true);
+    try {
+      await submitFieldExperience({
+        branchId,
+        visitDate,
+        requiredDocs,
+        visitResult,
+        durationMinutes: durationMinutes ? Number(durationMinutes) : null,
+      });
+      navigate("/submission-complete");
+    } catch {
+      setSubmitError(t("flow.submissionPaused"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <Page title={t("flow.bankShareTitle")}>
       <form onSubmit={submit}>
         <h2 className="section-title">{t("flow.shareBankExperience")}</h2>
         <p className="page-lede">{t("flow.shareExperienceIntro")}</p>
-        <TextField label={t("flow.bankBranchName")} />
-        <TextField label={t("flow.visitDate")} />
-        <TextField label={t("flow.languageSupport")} />
-        <TextField label={t("flow.visitResult")} />
+        <TextField label={t("flow.bankBranchName")} value={branchId} readOnly />
+        <TextField label={t("flow.visitDate")} type="date" value={visitDate} onChange={setVisitDate} required />
+        <TextField label={t("flow.visitResult")} value={visitResult} onChange={setVisitResult} required />
         <label className="field-label">
           <span>{t("flow.whatHappened")}</span>
-          <textarea className="field-control min-h-32" placeholder={t("flow.whatHappenedPlaceholder")} />
+          <textarea
+            className="field-control min-h-32"
+            placeholder={t("flow.whatHappenedPlaceholder")}
+            value={visitResult}
+            onChange={(event) => setVisitResult(event.target.value)}
+            required
+          />
         </label>
         <label className="field-label">
           <span>{t("flow.documentsReceived")}</span>
-          <textarea className="field-control min-h-32" placeholder={t("flow.documentsPlaceholder")} />
+          <textarea
+            className="field-control min-h-32"
+            placeholder={t("flow.documentsPlaceholder")}
+            value={requiredDocs}
+            onChange={(event) => setRequiredDocs(event.target.value)}
+          />
         </label>
+        <TextField
+          label={t("flow.durationMinutes")}
+          type="number"
+          value={durationMinutes}
+          onChange={setDurationMinutes}
+          min="0"
+        />
         <label className="mt-6 flex gap-3">
           <input type="checkbox" required />
           <span>{t("flow.privacyCheckbox")}</span>
         </label>
-        <FormButton>{t("flow.submitExperience")}</FormButton>
+        <FormButton disabled={isSubmitting}>{t("flow.submitExperience")}</FormButton>
+        {submitError && <p className="mt-3 text-sm text-red-700">{submitError}</p>}
       </form>
     </Page>
   );
