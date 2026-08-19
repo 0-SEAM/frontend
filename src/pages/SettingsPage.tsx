@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { SUPPORTED_LANGUAGES, setLanguage, type SupportedLanguage } from "../i18n";
 import { useConditionsStore } from "../store/conditionsStore";
 import { useTaskProgressStore } from "../store/taskProgressStore";
@@ -42,6 +43,10 @@ export function SettingsPage() {
       >
         {t("settings.clearData")}
       </button>
+
+      <Link className="secondary-action mt-3 w-full no-underline" to="/experiences/moderation">
+        {t("settings.reviewExperiences")}
+      </Link>
     </section>
   );
 }
