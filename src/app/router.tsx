@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AppShell } from "../components/AppShell";
+import { AdminRoute, ProtectedRoute } from "../components/ProtectedRoute";
 import { ConditionsPage } from "../pages/ConditionsPage";
 import { ExperienceModerationPage } from "../pages/ExperienceModerationPage";
 import { GuideSyncPage } from "../pages/GuideSyncPage";
@@ -37,29 +38,162 @@ export const router = createBrowserRouter([
     element: <AppShell />,
     children: [
       { index: true, element: <LandingPage /> },
-      { path: "onboarding", element: <OnboardingPage /> },
       { path: "signup", element: <SignupPage /> },
       { path: "login", element: <LoginPage /> },
-      { path: "save-failure", element: <SaveFailurePage /> },
-      { path: "timeline", element: <TimelinePage /> },
-      { path: "expiry-warning", element: <ExpiryWarningPage /> },
-      { path: "official-guide", element: <OfficialGuidePage /> },
-      { path: "alert-request", element: <AlertRequestPage /> },
-      { path: "alert-result", element: <AlertResultPage /> },
-      { path: "alert-failure", element: <AlertFailurePage /> },
-      { path: "sim-guide", element: <SimGuidePage /> },
-      { path: "sim-official", element: <SimOfficialPage /> },
-      { path: "banks", element: <BankRecommendationsPage /> },
-      { path: "branch-experience", element: <BranchExperiencePage /> },
-      { path: "bank-official", element: <BankOfficialPage /> },
-      { path: "bank-share", element: <BankSharePage /> },
-      { path: "privacy-warning", element: <PrivacyWarningPage /> },
-      { path: "submission-complete", element: <SubmissionCompletePage /> },
+      {
+        path: "banks",
+        element: (
+          <ProtectedRoute>
+            <BankRecommendationsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "branch-experience",
+        element: (
+          <ProtectedRoute>
+            <BranchExperiencePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "bank-official",
+        element: (
+          <ProtectedRoute>
+            <BankOfficialPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "bank-share",
+        element: (
+          <ProtectedRoute>
+            <BankSharePage />
+          </ProtectedRoute>
+        ),
+      },
       { path: "offline", element: <OfflineGuidePage /> },
       { path: "guides", element: <GuideSyncPage /> },
-      { path: "conditions", element: <ConditionsPage /> },
-      { path: "experiences/moderation", element: <ExperienceModerationPage /> },
-      { path: "settings", element: <SettingsPage /> },
+      {
+        path: "onboarding",
+        element: (
+          <ProtectedRoute>
+            <OnboardingPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "save-failure",
+        element: (
+          <ProtectedRoute>
+            <SaveFailurePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "timeline",
+        element: (
+          <ProtectedRoute>
+            <TimelinePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "expiry-warning",
+        element: (
+          <ProtectedRoute>
+            <ExpiryWarningPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "official-guide",
+        element: (
+          <ProtectedRoute>
+            <OfficialGuidePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "alert-request",
+        element: (
+          <ProtectedRoute>
+            <AlertRequestPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "alert-result",
+        element: (
+          <ProtectedRoute>
+            <AlertResultPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "alert-failure",
+        element: (
+          <ProtectedRoute>
+            <AlertFailurePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "sim-guide",
+        element: (
+          <ProtectedRoute>
+            <SimGuidePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "sim-official",
+        element: (
+          <ProtectedRoute>
+            <SimOfficialPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "privacy-warning",
+        element: (
+          <ProtectedRoute>
+            <PrivacyWarningPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "submission-complete",
+        element: (
+          <ProtectedRoute>
+            <SubmissionCompletePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "conditions",
+        element: (
+          <ProtectedRoute>
+            <ConditionsPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "experiences/moderation",
+        element: (
+          <AdminRoute>
+            <ExperienceModerationPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <ProtectedRoute>
+            <SettingsPage />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
 ]);

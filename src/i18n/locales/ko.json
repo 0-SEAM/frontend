@@ -15,6 +15,12 @@
     "clearData": "이 기기의 로컬 데이터 삭제",
     "reviewExperiences": "제출된 경험 검토"
   },
+  "auth": {
+    "passwordMismatch": "비밀번호가 일치하지 않습니다.",
+    "signupFailed": "회원가입에 실패했습니다. 입력 내용을 확인해 주세요.",
+    "loginFailed": "로그인에 실패했습니다. 이메일과 비밀번호를 확인해 주세요.",
+    "logout": "로그아웃"
+  },
   "common": {
     "next": "다음",
     "back": "이전",

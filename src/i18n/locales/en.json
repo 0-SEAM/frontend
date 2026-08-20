@@ -15,6 +15,12 @@
     "clearData": "Clear local data on this device",
     "reviewExperiences": "Review submitted experiences"
   },
+  "auth": {
+    "passwordMismatch": "The passwords do not match.",
+    "signupFailed": "Sign-up failed. Check your details and try again.",
+    "loginFailed": "Login failed. Check your email and password.",
+    "logout": "Log out"
+  },
   "common": {
     "next": "Next",
     "back": "Back",

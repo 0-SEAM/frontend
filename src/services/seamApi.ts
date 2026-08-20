@@ -1,26 +1,146 @@
 import type { TaskNode, TaskProgress, UserConditions } from "../domain/types";
+import { useAuthStore, type AuthSession } from "../store/authStore";
 
-const USER_ID_STORAGE_KEY = "seam.userId";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, "");
+const inFlightGets = new Map<string, Promise<Response>>();
+const inFlightTimelineSyncs = new Map<string, Promise<Record<string, TaskProgress>>>();
+let inFlightRefresh: Promise<boolean> | null = null;
 
 function apiUrl(path: string): string {
   if (!API_BASE_URL) throw new Error("VITE_API_BASE_URL must be configured.");
   return `${API_BASE_URL}${path}`;
 }
 
-export function getUserId(): string {
-  const existing = localStorage.getItem(USER_ID_STORAGE_KEY);
-  if (existing) return existing;
+export type AuthResponse = AuthSession;
 
-  const userId = crypto.randomUUID();
-  localStorage.setItem(USER_ID_STORAGE_KEY, userId);
+interface RefreshResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+function authHeaders(): Record<string, string> {
+  const { accessToken, userId } = useAuthStore.getState();
+  if (!accessToken || !userId) throw new Error("You must be logged in.");
+  return { Authorization: `Bearer ${accessToken}`, "X-User-Id": userId };
+}
+
+async function refreshAccessToken(): Promise<boolean> {
+  if (inFlightRefresh) return inFlightRefresh;
+
+  inFlightRefresh = refreshAccessTokenOnce();
+  try {
+    return await inFlightRefresh;
+  } finally {
+    inFlightRefresh = null;
+  }
+}
+
+async function refreshAccessTokenOnce(): Promise<boolean> {
+  const { refreshToken, updateTokens, clearSession } = useAuthStore.getState();
+  if (!refreshToken) return false;
+
+  const response = await fetch(apiUrl("/api/auth/refresh"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refreshToken }),
+  });
+  if (!response.ok) {
+    clearSession();
+    return false;
+  }
+
+  const tokens = (await response.json()) as RefreshResponse;
+  updateTokens(tokens);
+  return true;
+}
+
+async function request(path: string, init: RequestInit = {}, retry = true): Promise<Response> {
+  const method = (init.method ?? "GET").toUpperCase();
+  const headers = new Headers(init.headers);
+  const requestKey = `${method}:${apiUrl(path)}:${headers.get("Authorization") ?? ""}`;
+  let responsePromise: Promise<Response>;
+
+  if (method === "GET") {
+    const existingRequest = inFlightGets.get(requestKey);
+    if (existingRequest) return (await existingRequest).clone();
+
+    responsePromise = fetch(apiUrl(path), init);
+    inFlightGets.set(requestKey, responsePromise);
+    responsePromise.finally(() => inFlightGets.delete(requestKey)).catch(() => undefined);
+  } else {
+    responsePromise = fetch(apiUrl(path), init);
+  }
+
+  const response = await responsePromise;
+  if (response.status === 401 && retry && useAuthStore.getState().refreshToken) {
+    if (await refreshAccessToken()) {
+      const { accessToken } = useAuthStore.getState();
+      headers.set("Authorization", `Bearer ${accessToken}`);
+      return request(path, { ...init, headers }, false);
+    }
+  }
+  return response.clone();
+}
+
+export async function signup(input: { name: string; email: string; password: string }): Promise<AuthResponse> {
+  const response = await request(
+    "/api/auth/signup",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    },
+    false,
+  );
+  if (!response.ok) throw new Error(`Sign-up failed (${response.status}).`);
+  return response.json() as Promise<AuthResponse>;
+}
+
+export async function login(input: { email: string; password: string }): Promise<AuthResponse> {
+  const response = await request(
+    "/api/auth/login",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    },
+    false,
+  );
+  if (!response.ok) throw new Error(`Login failed (${response.status}).`);
+  return response.json() as Promise<AuthResponse>;
+}
+
+export async function logout(): Promise<void> {
+  const { refreshToken, clearSession } = useAuthStore.getState();
+  try {
+    if (refreshToken) {
+      await request(
+        "/api/auth/logout",
+        {
+          method: "POST",
+          headers: { ...authHeaders(), "Content-Type": "application/json" },
+          body: JSON.stringify({ refreshToken }),
+        },
+        false,
+      );
+    }
+  } finally {
+    clearSession();
+  }
+}
+
+export function getUserId(): string {
+  const userId = useAuthStore.getState().userId;
+  if (!userId) throw new Error("You must be logged in.");
   return userId;
 }
 
 export interface ApiUserCondition {
   userId: string;
   visaStatus: string;
+  visaType: string | null;
   entryDate: string;
+  registrationAppliedDate: string | null;
   workplaceLocation: string | null;
   residenceLocation: string | null;
   arcExpiryDate: string | null;
@@ -35,31 +155,34 @@ function toApiCondition(conditions: UserConditions): ApiUserCondition {
   return {
     userId: getUserId(),
     visaStatus: conditions.stayStatus,
+    visaType: conditions.visaType,
     entryDate: conditions.entryDate,
+    registrationAppliedDate: conditions.registrationAppliedDate,
     workplaceLocation: conditions.workplaceSigungu,
     residenceLocation: conditions.residenceSigungu,
     arcExpiryDate: conditions.residenceCardExpiryDate,
   };
 }
 
+export async function getConditions(): Promise<ApiUserCondition | null> {
+  const userId = getUserId();
+  const response = await request(`/api/conditions/${userId}`, { headers: authHeaders() });
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(`Condition lookup failed (${response.status}).`);
+  return response.json() as Promise<ApiUserCondition>;
+}
+
 export async function saveConditions(conditions: UserConditions): Promise<ApiUserCondition> {
   const payload = toApiCondition(conditions);
-  const existing = await fetch(apiUrl(`/api/conditions/${payload.userId}`), {
-    headers: { "X-User-Id": payload.userId },
-  });
-  const response = await fetch(apiUrl(existing.ok ? `/api/conditions/${payload.userId}` : "/api/conditions"), {
+  const headers = authHeaders();
+  const existing = await request(`/api/conditions/${payload.userId}`, { headers });
+  const response = await request(existing.ok ? `/api/conditions/${payload.userId}` : "/api/conditions", {
     method: existing.ok ? "PUT" : "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-User-Id": payload.userId,
-    },
+    headers: { ...headers, "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
 
-  if (!response.ok) {
-    throw new Error(`Condition save failed (${response.status}).`);
-  }
-
+  if (!response.ok) throw new Error(`Condition save failed (${response.status}).`);
   return response.json() as Promise<ApiUserCondition>;
 }
 
@@ -72,15 +195,12 @@ export interface FieldExperienceInput {
 }
 
 export async function submitFieldExperience(input: FieldExperienceInput): Promise<void> {
-  const response = await fetch(apiUrl("/api/experiences"), {
+  const response = await request("/api/experiences", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { ...authHeaders(), "Content-Type": "application/json" },
     body: JSON.stringify({ ...input, authorId: getUserId() }),
   });
-
-  if (!response.ok) {
-    throw new Error(`Experience submission failed (${response.status}).`);
-  }
+  if (!response.ok) throw new Error(`Experience submission failed (${response.status}).`);
 }
 
 export interface ApiFieldExperience {
@@ -94,20 +214,21 @@ export interface ApiFieldExperience {
 }
 
 export async function getApprovedExperiences(branchId: string): Promise<ApiFieldExperience[]> {
-  const response = await fetch(apiUrl(`/api/experiences?branchId=${encodeURIComponent(branchId)}`));
+  const response = await request(`/api/experiences?branchId=${encodeURIComponent(branchId)}`);
   if (!response.ok) throw new Error(`Experience lookup failed (${response.status}).`);
   return response.json() as Promise<ApiFieldExperience[]>;
 }
 
 export async function getPendingExperiences(): Promise<ApiFieldExperience[]> {
-  const response = await fetch(apiUrl("/api/experiences/pending"));
+  const response = await request("/api/experiences/pending", { headers: authHeaders() });
   if (!response.ok) throw new Error(`Pending experience lookup failed (${response.status}).`);
   return response.json() as Promise<ApiFieldExperience[]>;
 }
 
 export async function moderateExperience(experienceId: number, moderation: "APPROVED" | "REJECTED"): Promise<void> {
-  const response = await fetch(apiUrl(`/api/experiences/${experienceId}/moderate?moderation=${moderation}`), {
+  const response = await request(`/api/experiences/${experienceId}/moderate?moderation=${moderation}`, {
     method: "POST",
+    headers: authHeaders(),
   });
   if (!response.ok) throw new Error(`Experience moderation failed (${response.status}).`);
 }
@@ -121,7 +242,7 @@ export interface ApiGuideContent {
 }
 
 export async function getGuideContents(): Promise<ApiGuideContent[]> {
-  const response = await fetch(apiUrl("/api/guides/sync"));
+  const response = await request("/api/guides/sync");
   if (!response.ok) throw new Error(`Guide sync failed (${response.status}).`);
   return response.json() as Promise<ApiGuideContent[]>;
 }
@@ -136,19 +257,20 @@ interface ApiTimelineTask {
 
 async function getTimelineTasks(): Promise<ApiTimelineTask[]> {
   const userId = getUserId();
-  const response = await fetch(apiUrl(`/api/timelines/${userId}`), { headers: { "X-User-Id": userId } });
+  const response = await request(`/api/timelines/${userId}`, { headers: authHeaders() });
   if (!response.ok) throw new Error(`Timeline lookup failed (${response.status}).`);
   return response.json() as Promise<ApiTimelineTask[]>;
 }
 
-async function createTimelineTask(task: TaskNode, priority: number): Promise<void> {
+async function createTimelineTask(task: TaskNode, priority: number): Promise<ApiTimelineTask> {
   const userId = getUserId();
-  const response = await fetch(apiUrl(`/api/timelines/${userId}/tasks`), {
+  const response = await request(`/api/timelines/${userId}/tasks`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "X-User-Id": userId },
+    headers: { ...authHeaders(), "Content-Type": "application/json" },
     body: JSON.stringify({ taskType: task.id, priority, prerequisiteTaskIds: [] }),
   });
   if (!response.ok) throw new Error(`Timeline task creation failed (${response.status}).`);
+  return response.json() as Promise<ApiTimelineTask>;
 }
 
 function fromApiStatus(status: ApiTimelineTask["status"]): TaskProgress {
@@ -156,15 +278,22 @@ function fromApiStatus(status: ApiTimelineTask["status"]): TaskProgress {
 }
 
 export async function syncTimelineTasks(tasks: TaskNode[]): Promise<Record<string, TaskProgress>> {
+  const syncKey = `${getUserId()}:${tasks.map((task) => task.id).join(",")}`;
+  const existingSync = inFlightTimelineSyncs.get(syncKey);
+  if (existingSync) return existingSync;
+
+  const syncPromise = syncTimelineTasksOnce(tasks);
+  inFlightTimelineSyncs.set(syncKey, syncPromise);
+  syncPromise.finally(() => inFlightTimelineSyncs.delete(syncKey)).catch(() => undefined);
+  return syncPromise;
+}
+
+async function syncTimelineTasksOnce(tasks: TaskNode[]): Promise<Record<string, TaskProgress>> {
   const existing = await getTimelineTasks();
   const existingTypes = new Set(existing.map((task) => task.taskType));
   const missingTasks = tasks.filter((task) => !existingTypes.has(task.id));
-  if (missingTasks.length === 0) {
-    return Object.fromEntries(existing.map((task) => [task.taskType, fromApiStatus(task.status)]));
-  }
-
-  await Promise.all(missingTasks.map((task, index) => createTimelineTask(task, index + 1)));
-  const synced = await getTimelineTasks();
+  const createdTasks = await Promise.all(missingTasks.map((task, index) => createTimelineTask(task, index + 1)));
+  const synced = [...existing, ...createdTasks];
   return Object.fromEntries(synced.map((task) => [task.taskType, fromApiStatus(task.status)]));
 }
 
@@ -174,9 +303,9 @@ export async function updateTimelineTaskStatus(taskType: string, progress: TaskP
 
   const status = progress === "NOT_STARTED" ? "TODO" : progress;
   const userId = getUserId();
-  const response = await fetch(apiUrl(`/api/timelines/${userId}/tasks/${task.taskId}/status?status=${status}`), {
+  const response = await request(`/api/timelines/${userId}/tasks/${task.taskId}/status?status=${status}`, {
     method: "POST",
-    headers: { "X-User-Id": userId },
+    headers: authHeaders(),
   });
   if (!response.ok) throw new Error(`Timeline status update failed (${response.status}).`);
 }
