@@ -78,7 +78,7 @@ export function LandingPage() {
       </div>
       <h1 className="page-title">{t("flow.landingTitle")}</h1>
       <p className="page-lede">{t("flow.landingDescription")}</p>
-      <div className="mt-8 grid grid-cols-2 gap-2">
+      <div className="mt-8 grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
         <Link className="secondary-action no-underline" to="/signup">
           English
         </Link>

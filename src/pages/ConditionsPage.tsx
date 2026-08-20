@@ -28,7 +28,7 @@ export function ConditionsPage() {
     <section className="page-content">
       <StatusBar lastUpdated={saved.savedAt} />
       <h1 className="page-title">{t("nav.conditions")}</h1>
-      <dl className="surface-card [&_dt]:text-app-muted my-6 grid grid-cols-[max-content_1fr] gap-x-5 gap-y-4 text-[16px] [&_dd]:m-0">
+      <dl className="surface-card [&_dt]:text-app-muted my-6 grid grid-cols-1 gap-x-5 gap-y-3 text-[16px] min-[380px]:grid-cols-[max-content_1fr] min-[380px]:gap-y-4 [&_dd]:m-0 [&_dd]:min-w-0 [&_dd]:break-words">
         <Row label={t("onboarding.stepStatus")} value={t(`status.${saved.stayStatus}`)} />
         <Row label={t("onboarding.visaType")} value={saved.visaType} />
         <Row label={t("onboarding.entryDate")} value={saved.entryDate} />
