@@ -11,6 +11,7 @@ interface ConditionsState {
   updateDraft: (patch: Partial<UserConditions>) => void;
   resetDraftFromSaved: () => void;
   commitDraft: (savedAt: string) => void;
+  hydrateSaved: (saved: UserConditions) => void;
   skipOnboarding: () => void;
   /** FN-4106. 로그아웃 시 기기에 남은 개인 조건을 함께 지운다. */
   clearAll: () => void;
@@ -28,6 +29,7 @@ export const useConditionsStore = create<ConditionsState>()(
         const saved = { ...get().draft, savedAt };
         set({ saved, draft: saved });
       },
+      hydrateSaved: (saved) => set({ saved, draft: saved }),
       skipOnboarding: () => set({ onboardingSkipped: true }),
       clearAll: () => set({ saved: null, draft: EMPTY_CONDITIONS, onboardingSkipped: false }),
     }),

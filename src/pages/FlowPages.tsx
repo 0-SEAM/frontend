@@ -3,7 +3,16 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { KakaoMap } from "../components/KakaoMap";
 import { BANK_BRANCHES } from "../domain/branches";
-import { getApprovedExperiences, submitFieldExperience, type ApiFieldExperience } from "../services/seamApi";
+import {
+  getApprovedExperiences,
+  login,
+  signup,
+  submitFieldExperience,
+  type ApiFieldExperience,
+} from "../services/seamApi";
+import { useAuthStore } from "../store/authStore";
+import { useConditionsStore } from "../store/conditionsStore";
+import { useTaskProgressStore } from "../store/taskProgressStore";
 
 function Page({ title, children }: { title: string; children: ReactNode }) {
   const { t } = useTranslation();
@@ -96,21 +105,55 @@ export function LandingPage() {
 export function SignupPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const submit = (event: FormEvent) => {
+  const setSession = useAuthStore((state) => state.setSession);
+  const clearConditions = useConditionsStore((state) => state.clearAll);
+  const clearProgress = useTaskProgressStore((state) => state.clearAll);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
-    navigate("/onboarding");
+    if (password !== confirmPassword) {
+      setError(t("auth.passwordMismatch"));
+      return;
+    }
+
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      const session = await signup({ name, email, password });
+      clearConditions();
+      clearProgress();
+      setSession(session);
+      navigate("/onboarding");
+    } catch {
+      setError(t("auth.signupFailed"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <Page title={t("flow.signupTitle")}>
       <form onSubmit={submit}>
         <h2 className="section-title">{t("flow.createAccount")}</h2>
         <p className="page-lede">{t("flow.signupIntro")}</p>
-        <TextField label={t("flow.name")} />
-        <TextField label={t("flow.email")} type="email" />
-        <TextField label={t("flow.password")} type="password" />
-        <TextField label={t("flow.confirmPassword")} type="password" />
+        <TextField label={t("flow.name")} value={name} onChange={setName} required />
+        <TextField label={t("flow.email")} type="email" value={email} onChange={setEmail} required />
+        <TextField label={t("flow.password")} type="password" value={password} onChange={setPassword} required />
+        <TextField
+          label={t("flow.confirmPassword")}
+          type="password"
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+          required
+        />
         <p className="page-note">{t("flow.passwordRule")}</p>
-        <FormButton>{t("flow.signupAction")}</FormButton>
+        <FormButton disabled={isSubmitting}>{t("flow.signupAction")}</FormButton>
+        {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
       </form>
       <Link className="text-app-text mt-4 inline-block underline" to="/login">
         {t("flow.accountExists")}
@@ -126,18 +169,39 @@ export function SignupPage() {
 export function LoginPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const submit = (event: FormEvent) => {
+  const setSession = useAuthStore((state) => state.setSession);
+  const clearConditions = useConditionsStore((state) => state.clearAll);
+  const clearProgress = useTaskProgressStore((state) => state.clearAll);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
-    navigate("/timeline");
+    setError(null);
+    setIsSubmitting(true);
+    try {
+      const session = await login({ email, password });
+      clearConditions();
+      clearProgress();
+      setSession(session);
+      navigate("/timeline");
+    } catch {
+      setError(t("auth.loginFailed"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
   return (
     <Page title={t("flow.loginTitle")}>
       <form onSubmit={submit}>
         <h2 className="section-title">{t("flow.loginHeading")}</h2>
         <p className="page-lede">{t("flow.loginIntro")}</p>
-        <TextField label={t("flow.email")} type="email" />
-        <TextField label={t("flow.password")} type="password" />
-        <FormButton>{t("flow.loginAction")}</FormButton>
+        <TextField label={t("flow.email")} type="email" value={email} onChange={setEmail} required />
+        <TextField label={t("flow.password")} type="password" value={password} onChange={setPassword} required />
+        <FormButton disabled={isSubmitting}>{t("flow.loginAction")}</FormButton>
+        {error && <p className="mt-3 text-sm text-red-700">{error}</p>}
       </form>
       <p className="text-center">
         <span className="text-app-muted">{t("flow.noAccount")} </span>

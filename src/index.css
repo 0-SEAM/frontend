@@ -59,12 +59,28 @@
   }
 
   .app-header {
-    @apply border-app-line relative flex min-h-20 items-center justify-center border-b bg-white px-14 text-center;
+    @apply border-app-line relative flex min-h-20 items-center justify-between gap-4 border-b bg-white px-5 text-left;
     padding-top: env(safe-area-inset-top);
   }
 
   .app-header-title {
-    @apply text-[22px] leading-tight font-bold;
+    @apply shrink-0 text-[22px] leading-tight font-bold;
+  }
+
+  .app-header-user {
+    @apply flex max-w-[58%] min-w-0 items-center gap-2 rounded-full border border-[#e4e4e4] bg-[#fafafa] py-1.5 pr-1.5 pl-2;
+  }
+
+  .app-header-avatar {
+    @apply bg-app-accent flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white;
+  }
+
+  .app-header-user-name {
+    @apply min-w-0 truncate text-sm font-semibold;
+  }
+
+  .app-header-logout {
+    @apply text-app-text flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition hover:bg-[#ededed] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#303030];
   }
 
   .app-header-back {
