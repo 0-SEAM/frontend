@@ -52,7 +52,7 @@ export function ExperienceModerationPage() {
           </p>
           {experience.visitResult && <p>{experience.visitResult}</p>}
           {experience.requiredDocs && <p className="text-app-muted text-sm">{experience.requiredDocs}</p>}
-          <div className="mt-4 grid grid-cols-2 gap-2">
+          <div className="mt-4 grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
             <button
               className="primary-action"
               type="button"

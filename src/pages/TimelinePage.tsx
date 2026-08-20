@@ -46,7 +46,7 @@ export function TimelinePage() {
         </Link>
       )}
 
-      <div className="mt-6 grid grid-cols-2 gap-3">
+      <div className="mt-6 grid grid-cols-1 gap-3 min-[380px]:grid-cols-2">
         <Link className="surface-card text-center text-[15px] font-semibold no-underline" to="/sim-guide">
           {t("timeline.quickLinks.simGuide")}
         </Link>
