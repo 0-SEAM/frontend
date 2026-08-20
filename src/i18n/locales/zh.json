@@ -1,0 +1,50 @@
+{
+  "app": { "name": "0:SEAM", "tagline": "按步骤完成你的定居手续。" },
+  "nav": { "timeline": "时间线", "offline": "离线指南", "conditions": "我的情况", "settings": "设置" },
+  "settings": {
+    "language": "语言",
+    "languages": { "en": "English", "ko": "한국어", "zh": "中文", "vi": "Tiếng Việt", "ja": "日本語" },
+    "clearData": "清除本机数据",
+    "reviewExperiences": "审核提交的经历"
+  },
+  "auth": {
+    "passwordMismatch": "两次输入的密码不一致。",
+    "signupFailed": "注册失败，请检查输入后重试。",
+    "loginFailed": "登录失败，请检查邮箱和密码。",
+    "logout": "退出登录"
+  },
+  "common": { "next": "下一步", "back": "返回", "save": "保存", "skip": "暂时跳过", "offline": "离线" },
+  "flow": {
+    "landingTagline": "一步一步适应大田生活",
+    "landingTitle": "为外籍员工提供个性化定居指南",
+    "landingDescription": "获取通信、金融、住房和行政手续的分步指导。",
+    "signUp": "注册",
+    "existingAccount": "已有账户？登录",
+    "signupTitle": "注册",
+    "createAccount": "创建账户",
+    "signupIntro": "欢迎使用 0:SEAM。请输入以下信息完成注册。",
+    "name": "姓名（英文或韩文）",
+    "email": "邮箱地址",
+    "password": "密码",
+    "confirmPassword": "确认密码",
+    "signupAction": "注册",
+    "accountExists": "已有账户？登录",
+    "loginTitle": "登录",
+    "loginHeading": "登录 0:SEAM",
+    "loginIntro": "请输入账户邮箱和密码。",
+    "loginAction": "登录",
+    "noAccount": "还没有账户？",
+    "createAccountLink": "创建账户"
+  },
+  "onboarding": {
+    "stepStatus": "你现在处于什么状态？",
+    "stepStatusHelp": "我们先询问这一项，因为刚入境的人可能还没有居留卡。",
+    "stepConditions": "几个基本情况",
+    "visaType": "签证类型",
+    "entryDate": "入境日期",
+    "entryDatePlanned": "预计入境日期",
+    "residenceSigungu": "居住地（市/区）",
+    "workplaceSigungu": "工作地（市/区）",
+    "minimalCollection": "我们只收集市/区级别的信息，不会收集完整地址。"
+  }
+}

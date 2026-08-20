@@ -2,8 +2,11 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import en from "./locales/en.json";
 import ko from "./locales/ko.json";
+import zh from "./locales/zh.json";
+import vi from "./locales/vi.json";
+import ja from "./locales/ja.json";
 
-export const SUPPORTED_LANGUAGES = ["en", "ko"] as const;
+export const SUPPORTED_LANGUAGES = ["en", "ko", "zh", "vi", "ja"] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 const STORAGE_KEY = "seam.language";
@@ -22,6 +25,9 @@ void i18n.use(initReactI18next).init({
   resources: {
     en: { translation: en },
     ko: { translation: ko },
+    zh: { translation: zh },
+    vi: { translation: vi },
+    ja: { translation: ja },
   },
   lng: resolveInitialLanguage(),
   // FN-4123. 리소스가 누락되면 영어로 대체해 화면이 비지 않게 한다.
