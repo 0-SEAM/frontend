@@ -72,7 +72,7 @@ async function request(path: string, init: RequestInit = {}, retry = true): Prom
   }
 
   const response = await responsePromise;
-  if (response.status === 401 && retry && useAuthStore.getState().refreshToken) {
+  if (response.status === 403 && retry && useAuthStore.getState().refreshToken) {
     if (await refreshAccessToken()) {
       const { accessToken } = useAuthStore.getState();
       headers.set("Authorization", `Bearer ${accessToken}`);
