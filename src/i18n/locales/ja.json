@@ -1,0 +1,50 @@
+{
+  "app": { "name": "0:SEAM", "tagline": "定着への手続きを順番に。" },
+  "nav": { "timeline": "タイムライン", "offline": "オフライン案内", "conditions": "自分の条件", "settings": "設定" },
+  "settings": {
+    "language": "言語",
+    "languages": { "en": "English", "ko": "한국어", "zh": "中文", "vi": "Tiếng Việt", "ja": "日本語" },
+    "clearData": "この端末のローカルデータを削除",
+    "reviewExperiences": "投稿された体験を確認"
+  },
+  "auth": {
+    "passwordMismatch": "パスワードが一致しません。",
+    "signupFailed": "登録に失敗しました。入力内容を確認してもう一度お試しください。",
+    "loginFailed": "ログインに失敗しました。メールアドレスとパスワードを確認してください。",
+    "logout": "ログアウト"
+  },
+  "common": { "next": "次へ", "back": "戻る", "save": "保存", "skip": "後で設定", "offline": "オフライン" },
+  "flow": {
+    "landingTagline": "大田での生活を一歩ずつ",
+    "landingTitle": "外国人社員のためのパーソナル定着ガイド",
+    "landingDescription": "通信、金融、住居、行政手続きを順番に確認できます。",
+    "signUp": "新規登録",
+    "existingAccount": "アカウントをお持ちですか？ログイン",
+    "signupTitle": "新規登録",
+    "createAccount": "アカウントを作成",
+    "signupIntro": "0:SEAMへようこそ。登録に必要な情報を入力してください。",
+    "name": "名前（英語または韓国語）",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "confirmPassword": "パスワードの確認",
+    "signupAction": "登録する",
+    "accountExists": "アカウントをお持ちですか？ログイン",
+    "loginTitle": "ログイン",
+    "loginHeading": "0:SEAMにログイン",
+    "loginIntro": "メールアドレスとパスワードを入力してください。",
+    "loginAction": "ログイン",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "createAccountLink": "アカウントを作成"
+  },
+  "onboarding": {
+    "stepStatus": "現在の状況を教えてください",
+    "stepStatusHelp": "入国したばかりの方は在留カードをまだ持っていない場合があるため、最初に確認します。",
+    "stepConditions": "いくつかの条件",
+    "visaType": "ビザの種類",
+    "entryDate": "入国日",
+    "entryDatePlanned": "入国予定日",
+    "residenceSigungu": "居住地（市・区）",
+    "workplaceSigungu": "勤務地（市・区）",
+    "minimalCollection": "市・区レベルのみを収集し、完全な住所は収集しません。"
+  }
+}

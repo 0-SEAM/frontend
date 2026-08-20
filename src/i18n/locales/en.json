@@ -11,7 +11,7 @@
   },
   "settings": {
     "language": "Language",
-    "languages": { "en": "English", "ko": "한국어" },
+    "languages": { "en": "English", "ko": "한국어", "zh": "中文", "vi": "Tiếng Việt", "ja": "日本語" },
     "clearData": "Clear local data on this device",
     "reviewExperiences": "Review submitted experiences"
   },

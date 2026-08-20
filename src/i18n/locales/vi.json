@@ -1,0 +1,61 @@
+{
+  "app": { "name": "0:SEAM", "tagline": "Từng bước ổn định cuộc sống của bạn." },
+  "nav": {
+    "timeline": "Lộ trình",
+    "offline": "Hướng dẫn ngoại tuyến",
+    "conditions": "Điều kiện của tôi",
+    "settings": "Cài đặt"
+  },
+  "settings": {
+    "language": "Ngôn ngữ",
+    "languages": { "en": "English", "ko": "한국어", "zh": "中文", "vi": "Tiếng Việt", "ja": "日本語" },
+    "clearData": "Xóa dữ liệu trên thiết bị này",
+    "reviewExperiences": "Duyệt trải nghiệm đã gửi"
+  },
+  "auth": {
+    "passwordMismatch": "Mật khẩu không khớp.",
+    "signupFailed": "Đăng ký thất bại. Hãy kiểm tra thông tin và thử lại.",
+    "loginFailed": "Đăng nhập thất bại. Hãy kiểm tra email và mật khẩu.",
+    "logout": "Đăng xuất"
+  },
+  "common": {
+    "next": "Tiếp theo",
+    "back": "Quay lại",
+    "save": "Lưu",
+    "skip": "Bỏ qua lúc này",
+    "offline": "Ngoại tuyến"
+  },
+  "flow": {
+    "landingTagline": "Từng bước làm quen với cuộc sống ở Daejeon",
+    "landingTitle": "Hướng dẫn ổn định cuộc sống dành cho nhân viên nước ngoài",
+    "landingDescription": "Nhận hướng dẫn từng bước về liên lạc, tài chính, nhà ở và thủ tục hành chính.",
+    "signUp": "Đăng ký",
+    "existingAccount": "Đã có tài khoản? Đăng nhập",
+    "signupTitle": "Đăng ký",
+    "createAccount": "Tạo tài khoản",
+    "signupIntro": "Chào mừng bạn đến với 0:SEAM. Nhập thông tin bên dưới để hoàn tất đăng ký.",
+    "name": "Tên (tiếng Anh hoặc tiếng Hàn)",
+    "email": "Địa chỉ email",
+    "password": "Mật khẩu",
+    "confirmPassword": "Xác nhận mật khẩu",
+    "signupAction": "Đăng ký",
+    "accountExists": "Đã có tài khoản? Đăng nhập",
+    "loginTitle": "Đăng nhập",
+    "loginHeading": "Đăng nhập 0:SEAM",
+    "loginIntro": "Nhập email và mật khẩu tài khoản.",
+    "loginAction": "Đăng nhập",
+    "noAccount": "Chưa có tài khoản?",
+    "createAccountLink": "Tạo tài khoản"
+  },
+  "onboarding": {
+    "stepStatus": "Hiện bạn đang ở trạng thái nào?",
+    "stepStatusHelp": "Chúng tôi hỏi điều này trước vì người mới nhập cảnh có thể chưa có thẻ cư trú.",
+    "stepConditions": "Một vài điều kiện",
+    "visaType": "Loại visa",
+    "entryDate": "Ngày nhập cảnh",
+    "entryDatePlanned": "Ngày dự kiến nhập cảnh",
+    "residenceSigungu": "Nơi ở (thành phố/quận)",
+    "workplaceSigungu": "Nơi làm việc (thành phố/quận)",
+    "minimalCollection": "Chúng tôi chỉ thu thập thông tin đến cấp thành phố/quận, không thu thập địa chỉ đầy đủ."
+  }
+}

@@ -13,6 +13,7 @@ import {
 import { useAuthStore } from "../store/authStore";
 import { useConditionsStore } from "../store/conditionsStore";
 import { useTaskProgressStore } from "../store/taskProgressStore";
+import { setLanguage, type SupportedLanguage } from "../i18n";
 
 function Page({ title, children }: { title: string; children: ReactNode }) {
   const { t } = useTranslation();
@@ -79,18 +80,24 @@ export function LandingPage() {
       <h1 className="page-title">{t("flow.landingTitle")}</h1>
       <p className="page-lede">{t("flow.landingDescription")}</p>
       <div className="mt-8 grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
-        <Link className="secondary-action no-underline" to="/signup">
-          English
-        </Link>
-        <Link className="secondary-action no-underline" to="/signup">
-          中文
-        </Link>
-        <Link className="secondary-action no-underline" to="/signup">
-          Tiếng Việt
-        </Link>
-        <Link className="secondary-action no-underline" to="/signup">
-          日本語
-        </Link>
+        {(
+          [
+            ["en", "English"],
+            ["ko", "한국어"],
+            ["zh", "中文"],
+            ["vi", "Tiếng Việt"],
+            ["ja", "日本語"],
+          ] as const
+        ).map(([language, label]) => (
+          <button
+            className="secondary-action no-underline"
+            key={language}
+            type="button"
+            onClick={() => void setLanguage(language as SupportedLanguage)}
+          >
+            {label}
+          </button>
+        ))}
       </div>
       <Link className="primary-action mt-8 w-full no-underline" to="/signup">
         {t("flow.signUp")}
